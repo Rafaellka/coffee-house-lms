@@ -1,8 +1,17 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
-  },
+	{
+		path: '',
+		redirectTo: 'tracks',
+		pathMatch: 'full'
+	},
+	{
+		path: 'tracks',
+		loadChildren: () => import('./pages/track/track.routes').then((m) => m.routes),
+	},
+	{
+		path: '**',
+		redirectTo: 'tracks',
+	}
 ];
