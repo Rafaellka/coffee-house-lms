@@ -1,0 +1,7 @@
+{
+  "name": "coffe-house-lms",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
