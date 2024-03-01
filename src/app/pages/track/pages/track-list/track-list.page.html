@@ -1,1 +1,3 @@
-track-list
+<ng-container *ngFor="let track of trackList$ | async">
+    <div>{{track.title}}</div>
+</ng-container>
