@@ -12,15 +12,18 @@ export class TrackRequestService {
 		return of([
 			{
 				id: 1,
-				title: 'Трек 1'
+				title: 'Курс 1',
+				description: 'fdsadafsdsafds'
 			},
 			{
 				id: 2,
-				title: 'Трек 2'
+				title: 'Курс 2',
+				description: 'fdsadafsdsafds'
 			},
 			{
 				id: 3,
-				title: 'Трек 3'
+				title: 'Курс 3',
+				description: 'fdsadafsdsafds'
 			},
 		]);
 		return this._httpClient.get<ITrackResponseModel[]>('')

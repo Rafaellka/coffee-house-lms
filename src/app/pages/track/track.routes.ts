@@ -20,7 +20,7 @@ export const routes: Routes = [
 				component: TrackListPage
 			},
 			{
-				path: 'track-info',
+				path: 'track-info/:id',
 				component: TrackInfoPage
 			}
 		]

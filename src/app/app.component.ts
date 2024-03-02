@@ -1,13 +1,4 @@
 import { Component } from '@angular/core';
-import {
-	IonApp,
-	IonRouterOutlet,
-	IonSplitPane,
-	IonLabel,
-	IonIcon,
-	IonMenuToggle,
-	IonList, IonContent
-} from '@ionic/angular/standalone';
 import { IonicModule } from "@ionic/angular";
 import { RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";

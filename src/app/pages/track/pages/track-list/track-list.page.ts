@@ -4,11 +4,14 @@ import { TrackModel } from "../../data/models/track.model";
 import { TrackRequestService } from "../../data/services/track-request.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AsyncPipe, CommonModule } from "@angular/common";
+import { IonContent } from "@ionic/angular/standalone";
+import { HeaderComponent } from "../../../../custom-modules/header/header.component";
+import { TrackListItemComponent } from "../../components/track-list-item/track-list-item.component";
 
 @Component({
 	templateUrl: './track-list.page.html',
 	standalone: true,
-	imports: [AsyncPipe, CommonModule],
+	imports: [AsyncPipe, CommonModule, IonContent, HeaderComponent, TrackListItemComponent],
 	styleUrls: ['./styles/track-list.page.scss']
 })
 export class TrackListPage implements OnInit {
