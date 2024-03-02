@@ -11,6 +11,10 @@ export const routes: Routes = [
 		loadChildren: () => import('./pages/track/track.routes').then((m) => m.routes),
 	},
 	{
+		path: 'auth',
+		loadChildren: () => import('./pages/auth/auth.routes').then((m) => m.routes),
+	},
+	{
 		path: '**',
 		redirectTo: 'tracks',
 	}
