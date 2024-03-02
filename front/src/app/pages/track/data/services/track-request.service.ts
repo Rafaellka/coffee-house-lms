@@ -31,4 +31,11 @@ export class TrackRequestService {
 				map((list: ITrackResponseModel[]) => list.map((item: ITrackResponseModel) => new TrackModel(item)))
 			);
 	}
+
+	public getTrackInfo(trackId: number): Observable<any> {
+		return this._httpClient.get('')
+			.pipe(
+				map(() => {})
+			)
+	}
 }
