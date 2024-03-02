@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt';
+import { pool } from '../db.js';
 
 export const tryToLogin = async (req, res) => {
     const {login, password} = req.body;
     const potentialLogin = await pool.query(
-        "SELECT passhash FROM users WHERE login=$1",
+        "SELECT * FROM users WHERE login=$1",
         [login]
     );
 
@@ -64,7 +65,7 @@ export const tryToRegister = async (req, res) => {
     res.json({
         loggedIn: true,
         user: {
-            login, name, role, passHash
+            name, role
         }
     });
 };

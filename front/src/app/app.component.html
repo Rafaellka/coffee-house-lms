@@ -1,6 +1,6 @@
 <ion-app>
     <ion-split-pane contentId="main-content">
-        <ion-menu menuId="navigation" contentId="main-content" type="overlay">
+        <ion-menu *ngIf="authRequestService.isAuthorized" menuId="navigation" contentId="main-content" type="overlay">
             <ion-header>
                 <ion-toolbar>
                     <ion-title class="app__title">COFFEE LOVERS</ion-title>

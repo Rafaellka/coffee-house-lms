@@ -1,6 +1,6 @@
 import { UserRoleEnum } from "../enums/user-role.enum";
 
-export interface IAuthUserRequestModel {
+export interface ICreateUserRequestModel {
 	login: string;
 	password: string;
 	name: string;
