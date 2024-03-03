@@ -18,6 +18,11 @@ export const routes: Routes = [
 		canDeactivate: [authGuard]
 	},
 	{
+		path: 'profile',
+		loadChildren: () => import('./pages/profile/profile.routes').then((m) => m.routes),
+		canActivate: [authGuard]
+	},
+	{
 		path: '**',
 		redirectTo: 'auth',
 	}

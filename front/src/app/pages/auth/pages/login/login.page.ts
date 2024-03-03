@@ -8,7 +8,8 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 @Component({
 	templateUrl: './login.page.html',
 	standalone: true,
-	imports: [IonContent, IonInput, IonButton, FormsModule]
+	imports: [IonContent, IonInput, IonButton, FormsModule],
+	styleUrls: ['./styles/login.scss']
 })
 export class LoginPage {
 	public loginControlValue: string = '';

@@ -1,20 +1,22 @@
 <ion-content>
-    <ion-input
-        [(ngModel)]="loginControlValue"
-        label="Придумайте логин"
-        placeholder="Логин"
-        [required]="true"
-        fill="outline"
-        mode="md"
-        label-placement="stacked"></ion-input>
-    <ion-input
-        [(ngModel)]="passwordControlValue"
-        label="Придумайте пароль"
-        placeholder="Пароль"
-        [required]="true"
-        fill="outline"
-        mode="md"
-        type="password"
-        label-placement="stacked"></ion-input>
-    <ion-button [disabled]="!loginControlValue || !passwordControlValue" (click)="login()">Войти</ion-button>
+    <div class="login__container">
+        <ion-input
+            [(ngModel)]="loginControlValue"
+            label="Введите логин"
+            placeholder="Логин"
+            [required]="true"
+            fill="outline"
+            mode="md"
+            label-placement="stacked"></ion-input>
+        <ion-input
+            [(ngModel)]="passwordControlValue"
+            label="Введите пароль"
+            placeholder="Пароль"
+            [required]="true"
+            fill="outline"
+            mode="md"
+            type="password"
+            label-placement="stacked"></ion-input>
+        <ion-button [disabled]="!loginControlValue || !passwordControlValue" (click)="login()">Войти</ion-button>
+    </div>
 </ion-content>

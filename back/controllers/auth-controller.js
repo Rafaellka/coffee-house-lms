@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { pool } from '../db.js';
+import {pool} from '../db.js';
 
 export const tryToLogin = async (req, res) => {
     const {login, password} = req.body;
@@ -31,7 +31,10 @@ export const tryToLogin = async (req, res) => {
 
     res.json({
         loggedIn: true,
-        user
+        user: {
+            name: user.name,
+            role: user.role
+        }
     });
 };
 

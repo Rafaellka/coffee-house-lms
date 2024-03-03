@@ -1,5 +1,5 @@
 export interface ITrackResponseModel {
-	title: string;
+	name: string;
 	id: number;
 	description: string;
 }

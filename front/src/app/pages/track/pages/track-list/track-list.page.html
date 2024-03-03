@@ -3,4 +3,10 @@
     <ng-container *ngFor="let track of trackList$ | async">
         <track-list-item [model]="track"></track-list-item>
     </ng-container>
+    <ion-button class="track-list-page__add-button" (click)="openModal()">Добавить курс</ion-button>
+    <ion-modal [isOpen]="isAddTrackModalOpen$ | async">
+        <ng-template>
+            <add-track-modal (closeModal)="closeModal()"></add-track-modal>
+        </ng-template>
+    </ion-modal>
 </ion-content>

@@ -4,24 +4,27 @@ import { TrackModel } from "../../data/models/track.model";
 import { TrackRequestService } from "../../data/services/track-request.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AsyncPipe, CommonModule } from "@angular/common";
-import { IonContent } from "@ionic/angular/standalone";
+import { IonButton, IonContent, IonModal } from "@ionic/angular/standalone";
 import { HeaderComponent } from "../../../../custom-modules/header/header.component";
 import { TrackListItemComponent } from "../../components/track-list-item/track-list-item.component";
+import { AddTrackModalComponent } from "../../components/add-track-modal/add-track-modal.component";
 
 @Component({
 	templateUrl: './track-list.page.html',
 	standalone: true,
-	imports: [AsyncPipe, CommonModule, IonContent, HeaderComponent, TrackListItemComponent],
+	imports: [AsyncPipe, CommonModule, IonContent, HeaderComponent, TrackListItemComponent, IonButton, IonModal, AddTrackModalComponent],
 	styleUrls: ['./styles/track-list.page.scss']
 })
 export class TrackListPage implements OnInit {
+	public isAddTrackModalOpen$: Observable<boolean>;
 	public trackList$: Observable<TrackModel[]>;
 	private _trackList$: BehaviorSubject<TrackModel[]> = new BehaviorSubject<TrackModel[]>([]);
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
 	private _destroyRef$: DestroyRef = inject(DestroyRef);
-
+	private _isAddTrackModalOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 	constructor() {
 		this.trackList$ = this._trackList$.asObservable();
+		this.isAddTrackModalOpen$ = this._isAddTrackModalOpen$.asObservable();
 	}
 
 	public ngOnInit(): void {
@@ -32,5 +35,13 @@ export class TrackListPage implements OnInit {
 			.subscribe((list: TrackModel[]) => {
 				this._trackList$.next(list);
 			});
+	}
+
+	public openModal(): void {
+		this._isAddTrackModalOpen$.next(true);
+	}
+
+	public closeModal(): void {
+		this._isAddTrackModalOpen$.next(false);
 	}
 }
