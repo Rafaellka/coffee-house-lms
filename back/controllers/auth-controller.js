@@ -25,13 +25,10 @@ export const tryToLogin = async (req, res) => {
         });
     }
 
-    req.session.user = {
-        login
-    };
-
     res.json({
         loggedIn: true,
         user: {
+            id: user.id,
             name: user.name,
             role: user.role
         }
@@ -60,10 +57,6 @@ export const tryToRegister = async (req, res) => {
          VALUES ($1, $2, $3, $4)`,
         [login, name, role, passHash]
     );
-
-    req.session.user = {
-        login
-    }
 
     res.json({
         loggedIn: true,

@@ -25,6 +25,9 @@ export class AuthRequestService {
 		this.isAuthorized$ = this._isAuthorized$.asObservable();
 	}
 
+	public setAuthorized(isAuthorized: boolean): void {
+		this._isAuthorized$.next(isAuthorized);
+	}
 	/** Авторизация */
 	public authorize(data: IAuthUserRequestModel): Observable<boolean> {
 		return this._httpClient.post<IAuthUserResponseModel>(environment.apiUrl + 'auth/login', data)
@@ -33,6 +36,7 @@ export class AuthRequestService {
 					if (res.loggedIn) {
 						const userModel: UserModel = new UserModel(res.user);
 						this._userInfo$.next(userModel);
+						sessionStorage.setItem('user', JSON.stringify(res.user));
 						this._isAuthorized$.next(true);
 					}
 				}),

@@ -18,32 +18,26 @@ CREATE TABLE lectures
 (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
-    text VARCHAR NOT NULL
-)
-
-CREATE TABLE tracks-lectures
-(
-    trackId SERIAL,
-    lectureId SERIAL,
-    lectureOrder SERIAL
+    text VARCHAR NOT NULL,
+    trackId INTEGER NOT NULL,
+    order INTEGER NOT NULL
 )
 
 CREATE TABLE tests
 (
-    id SERIAL PRIMARY KEY,
-    question VARCHAR NOT NULL,
-    rightAnswerId SERIAL
+    id SERIAL PRIMARY KEY
+)
+
+CREATE TABLE questions
+(
+    testId INTEGER NOT NULL,
+    questionText VARCHAR NOT NULL,
+    rightAnswerId INTEGER NOT NULL
 )
 
 CREATE TABLE answers
 (
     id SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL,
-    text VARCHAR NOT NULL
-)
-
-CREATE TABLE tests-answers
-(
-    testId SERIAL,
-    answerId SERIAL
+    text VARCHAR NOT NULL,
+    questionId INTEGER NOT NULL
 )
