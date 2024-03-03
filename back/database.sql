@@ -20,19 +20,23 @@ CREATE TABLE lectures
     name VARCHAR NOT NULL,
     text VARCHAR NOT NULL,
     trackId INTEGER NOT NULL,
-    order INTEGER NOT NULL
+    orderInTrack SERIAL NOT NULL
 )
 
 CREATE TABLE tests
 (
-    id SERIAL PRIMARY KEY
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    trackId INTEGER NOT NULL,
+    orderInTrack SERIAL NOT NULL
 )
 
 CREATE TABLE questions
 (
     testId INTEGER NOT NULL,
     questionText VARCHAR NOT NULL,
-    rightAnswerId INTEGER NOT NULL
+    rightAnswerId INTEGER NOT NULL,
+    orderInTest INTEGER NOT NULL
 )
 
 CREATE TABLE answers

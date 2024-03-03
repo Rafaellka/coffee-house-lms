@@ -1,4 +1,19 @@
 <app-header [title]="'Инфа о курсе'"></app-header>
 <ion-content>
-    123
+    <div>
+        <ion-list [inset]="true">
+            <div class="track-info-page__group-label" >Список лекций</div>
+            <ng-container *ngFor="let lecture of lectureList$ | async">
+                <ion-item button detail="true" detail-icon="caret-forward-outline">{{lecture.name}}</ion-item>
+            </ng-container>
+            <ion-button class="track-info-page__add-button">Добавить лекцию</ion-button>
+        </ion-list>
+        <ion-list [inset]="true">
+            <div class="track-info-page__group-label">Список тестов</div>
+            <ng-container *ngFor="let test of testList$ | async">
+                <ion-item>{{test.name}}</ion-item>
+            </ng-container>
+            <ion-button class="track-info-page__add-button">Добавить тест</ion-button>
+        </ion-list>
+    </div>
 </ion-content>
