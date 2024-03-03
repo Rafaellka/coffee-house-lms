@@ -6,6 +6,7 @@ import { USER_INFO_TOKEN } from "../../tokens/user-info.token";
 import { IAuthUserResponseModel } from "../response-models/auth-user.response-model";
 import { UserModel } from "../models/user.model";
 import { ICreateUserRequestModel } from "../request-models/create-user.request-model";
+import { IAuthUserRequestModel } from "../request-models/auth-user.request-model";
 
 @Injectable({
 	providedIn: 'root'
@@ -25,7 +26,7 @@ export class AuthRequestService {
 	}
 
 	/** Авторизация */
-	public authorize(data: ICreateUserRequestModel): Observable<boolean> {
+	public authorize(data: IAuthUserRequestModel): Observable<boolean> {
 		return this._httpClient.post<IAuthUserResponseModel>(environment.apiUrl + 'auth/login', data)
 			.pipe(
 				tap((res: IAuthUserResponseModel) => {

@@ -16,5 +16,5 @@
         mode="md"
         type="password"
         label-placement="stacked"></ion-input>
-    <ion-button>Войти</ion-button>
+    <ion-button [disabled]="!loginControlValue || !passwordControlValue" (click)="login()">Войти</ion-button>
 </ion-content>
