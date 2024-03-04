@@ -23,6 +23,11 @@ export const routes: Routes = [
 		canActivate: [authGuard]
 	},
 	{
+		path: 'lecture',
+		loadChildren: () => import('./pages/lecture/lecture.routes').then((m) => m.routes),
+		canActivate: [authGuard]
+	},
+	{
 		path: '**',
 		redirectTo: 'auth',
 	}

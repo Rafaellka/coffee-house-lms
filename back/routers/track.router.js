@@ -1,5 +1,9 @@
 import express from "express";
-import {addTrack, getLecturesAndTestInTrack, getTrackList} from "../controllers/track-controller.js";
+import {
+    addTrack,
+    getLecturesInTrack, getTestInTrack,
+    getTrackList
+} from "../controllers/track-controller.js";
 
 export const trackRouter = express.Router();
 
@@ -12,5 +16,9 @@ trackRouter
     .post(addTrack)
 
 trackRouter
-    .route('/details')
-    .get(getLecturesAndTestInTrack)
+    .route('/lectures')
+    .get(getLecturesInTrack)
+
+trackRouter
+    .route('/tests')
+    .get(getTestInTrack)

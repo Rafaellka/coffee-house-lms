@@ -1,0 +1,10 @@
+<app-header [title]="lecture.name"></app-header>
+<ion-content>
+    <div class="lecture-page__container">
+        <iframe class="lecture-page__video" [src]="lecture.videoUrl | safe" allowfullscreen></iframe>
+        <h3>
+            Текстовая лекция
+        </h3>
+        <div>{{lecture.text}}</div>
+    </div>
+</ion-content>

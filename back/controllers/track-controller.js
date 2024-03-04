@@ -12,13 +12,32 @@ export const addTrack = async (req, res) => {
     res.json();
 }
 
-export const getLecturesAndTestInTrack = async (req, res) => {
+export const getLecturesInTrack = async (req, res) => {
+    const trackId = req.query.trackId;
+    const lectures = await pool.query("SELECT * FROM lectures WHERE trackid=$1", [trackId]);
+
+    const lecturesRows = lectures.rows.map(({name, id, videourl, trackid, text}) => ({
+        name,
+        id,
+        text,
+        videoUrl: videourl,
+        trackId: trackid
+    }))
+    res.json(lecturesRows);
+}
+
+export const getTestInTrack = async (req, res) => {
     const trackId = req.query.trackId;
     const lectures = await pool.query("SELECT * FROM lectures WHERE trackid=$1", [trackId]);
     const tests = await pool.query("SELECT * FROM tests WHERE trackid=$1", [trackId]);
 
+    const lecturesRows = lectures.rows.map(({name, id, videourl, trackid}) => ({
+        name,
+        id,
+        videoUrl: videourl,
+        trackId: trackid
+    }))
     res.json({
-        lectures: lectures.rows,
         tests: tests.rows
     });
 }

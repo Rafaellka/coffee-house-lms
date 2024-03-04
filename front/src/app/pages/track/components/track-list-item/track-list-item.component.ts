@@ -15,6 +15,10 @@ export class TrackListItemComponent {
 	private _router: Router = inject(Router);
 
 	public goToTrackInfo(): void {
-		this._router.navigate(['tracks/track-info', this.model.id])
+		this._router.navigate(['tracks/track-info', this.model.id], {
+			state: {
+				track: this.model
+			}
+		})
 	}
 }

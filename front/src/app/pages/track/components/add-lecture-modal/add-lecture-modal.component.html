@@ -1,0 +1,33 @@
+<div class="add-track-modal__container">
+    <ion-icon
+        class="add-track-modal__close"
+        name="close-outline" slot="end"
+        (click)="closeModal.next()"></ion-icon>
+    <ion-input
+        [(ngModel)]="nameControlValue"
+        label="Введите название лекции"
+        placeholder="Название лекции"
+        [required]="true"
+        fill="outline"
+        mode="md"
+        label-placement="stacked">
+    </ion-input>
+    <ion-input
+        [(ngModel)]="videoUrlControlValue"
+        label="Введите ссылку на лекцию"
+        placeholder="Ссылка на лекцию"
+        [required]="true"
+        fill="outline"
+        label-placement="stacked">
+    </ion-input>
+    <ion-textarea
+        [(ngModel)]="textControlValue"
+        rows="10"
+        label="Введите текст лекции"
+        placeholder="Текстовая лекция"
+        [required]="true"
+        fill="outline"
+        label-placement="stacked">
+    </ion-textarea>
+    <ion-button [disabled]="!videoUrlControlValue || !nameControlValue || !textControlValue" (click)="addTrack()">Добавить курс</ion-button>
+</div>

@@ -6,7 +6,7 @@
     <ion-button class="track-list-page__add-button" (click)="openModal()">Добавить курс</ion-button>
     <ion-modal [isOpen]="isAddTrackModalOpen$ | async">
         <ng-template>
-            <add-track-modal (closeModal)="closeModal()"></add-track-modal>
+            <add-track-modal (newTrackAdd)="loadTrackList()" (closeModal)="closeModal()"></add-track-modal>
         </ng-template>
     </ion-modal>
 </ion-content>

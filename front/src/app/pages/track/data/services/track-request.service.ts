@@ -10,6 +10,7 @@ import { LectureModel } from "../models/lecture.model";
 import { ILectureResponseModel } from "../response-models/lecture.response-model";
 import { ITestResponseModel } from "../response-models/test.response-model";
 import { TestModel } from "../models/test.model";
+import { IAddLectureRequestModel } from "../request-models/add-lecture.request-model";
 
 @Injectable()
 export class TrackRequestService {
@@ -22,26 +23,34 @@ export class TrackRequestService {
 			);
 	}
 
-	public getTrackInfo(trackId: number): Observable<{ lectures: LectureModel[], tests: TestModel[] }> {
-		return this._httpClient.get<ITrackInfoResponseModel>(environment.apiUrl + 'track/details', {
+	public getLecturesInTrack(trackId: number): Observable<LectureModel[]> {
+		return this._httpClient.get<ILectureResponseModel[]>(environment.apiUrl + 'track/lectures', {
 			params: {
 				trackId
 			}
 		})
 			.pipe(
-				map((res: ITrackInfoResponseModel) => {
-					const lectures = res.lectures.map((item: ILectureResponseModel) => new LectureModel(item));
-					const tests = res.tests.map(((item: ITestResponseModel) => new TestModel(item)));
+				map((res: ILectureResponseModel[]) => res.map((item: ILectureResponseModel) => new LectureModel(item)))
+			);
+	}
 
-					return {
-						lectures,
-						tests
-					}
-				})
+	public getTestsInTrack(trackId: number): Observable<TestModel[]> {
+		return this._httpClient.get<ITestResponseModel[]>(environment.apiUrl + 'track/tests', {
+			params: {
+				trackId
+			}
+		})
+			.pipe(
+				map((res: ITestResponseModel[]) => res.map((item: ITestResponseModel) => new TestModel(item)))
 			);
 	}
 
 	public addTrack(data: IAddTrackRequestModel): Observable<void> {
 		return this._httpClient.post<void>(environment.apiUrl + 'track/add', data);
 	}
+
+	public addLecture(data: IAddLectureRequestModel): Observable<void> {
+		return this._httpClient.post<void>(environment.apiUrl + 'lecture/add', data);
+	}
+
 }

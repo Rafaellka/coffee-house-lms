@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Output } from "@angular/core";
+import { Component, DestroyRef, EventEmitter, inject, Input, Output } from "@angular/core";
 import { IonButton, IonContent, IonIcon, IonInput, IonTextarea } from "@ionic/angular/standalone";
 import { FormsModule } from "@angular/forms";
 import { TrackRequestService } from "../../data/services/track-request.service";
@@ -7,21 +7,25 @@ import { addIcons } from "ionicons";
 import { closeOutline } from "ionicons/icons";
 
 @Component({
-	selector: 'add-track-modal',
-	templateUrl: './add-track-modal.component.html',
+	selector: 'add-lecture-modal',
+	templateUrl: './add-lecture-modal.component.html',
 	standalone: true,
 	imports: [IonInput, IonContent, FormsModule, IonButton, IonTextarea, IonIcon],
-	styleUrls: ['./styles/add-track-modal.scss']
+	styleUrls: ['./styles/add-lecture-modal.scss']
 })
-export class AddTrackModalComponent {
+export class AddLectureModalComponent {
+	@Input()
+	public trackId!: number;
+
 	@Output()
-	public newTrackAdd: EventEmitter<void> = new EventEmitter<void>();
+	public newLectureAdd: EventEmitter<void> = new EventEmitter<void>();
 
 	@Output()
 	public closeModal: EventEmitter<void> = new EventEmitter<void>();
 
 	public nameControlValue: string = '';
-	public descriptionControlValue: string = '';
+	public videoUrlControlValue: string = '';
+	public textControlValue: string = '';
 
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
 	private _destroyRef: DestroyRef = inject(DestroyRef);
@@ -31,16 +35,18 @@ export class AddTrackModalComponent {
 	}
 
 	public addTrack(): void {
-		this._trackRequestService.addTrack({
+		this._trackRequestService.addLecture({
 			name: this.nameControlValue,
-			description: this.descriptionControlValue
+			videoUrl: this.videoUrlControlValue,
+			trackId: this.trackId,
+			text: this.textControlValue
 		})
 			.pipe(
 				takeUntilDestroyed(this._destroyRef)
 			)
 			.subscribe(() => {
 				this.closeModal.next();
-				this.newTrackAdd.next();
+				this.newLectureAdd.next();
 			});
 	}
 }

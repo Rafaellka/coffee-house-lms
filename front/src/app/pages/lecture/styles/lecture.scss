@@ -1,0 +1,14 @@
+.lecture-page {
+    &__container {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &__video {
+        width: 888px;
+        height: 500px;
+        align-self: center;
+    }
+}
