@@ -14,7 +14,8 @@ import { QuestionComponent } from "./components/question/question.component";
 @Component({
 	templateUrl: './test.page.html',
 	standalone: true,
-	imports: [HeaderComponent, CommonModule, IonContent, IonButton, IonModal, AddQuestionModalComponent, IonList, QuestionComponent]
+	imports: [HeaderComponent, CommonModule, IonContent, IonButton, IonModal, AddQuestionModalComponent, IonList, QuestionComponent],
+	styleUrls: ['./styles/test.page.scss']
 })
 export class TestPage extends WithModalComponent implements OnInit {
 	public get test(): TestModel {
