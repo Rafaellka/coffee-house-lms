@@ -33,7 +33,7 @@ CREATE TABLE tests
 CREATE TABLE questions
 (
     testId INTEGER NOT NULL,
-    questionText VARCHAR NOT NULL,
+    text VARCHAR NOT NULL,
     rightAnswerId INTEGER NOT NULL,
     orderInTest INTEGER NOT NULL
 )

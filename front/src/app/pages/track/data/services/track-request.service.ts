@@ -11,6 +11,7 @@ import { ILectureResponseModel } from "../response-models/lecture.response-model
 import { ITestResponseModel } from "../response-models/test.response-model";
 import { TestModel } from "../models/test.model";
 import { IAddLectureRequestModel } from "../request-models/add-lecture.request-model";
+import { IAddTestRequestModel } from "../request-models/add-test.request-model";
 
 @Injectable()
 export class TrackRequestService {
@@ -52,5 +53,10 @@ export class TrackRequestService {
 	public addLecture(data: IAddLectureRequestModel): Observable<void> {
 		return this._httpClient.post<void>(environment.apiUrl + 'lecture/add', data);
 	}
+
+	public addTest(data: IAddTestRequestModel): Observable<void> {
+		return this._httpClient.post<void>(environment.apiUrl + 'test/add', data);
+	}
+
 
 }

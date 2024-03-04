@@ -1,0 +1,9 @@
+<app-header [title]="test.name"></app-header>
+<ion-content>
+    <ion-button (click)="openModal()">Добавить вопрос</ion-button>
+    <ion-modal [isOpen]="isAddModalOpen$ | async">
+        <ng-template>
+            <add-question-modal (closeModal)="closeModal()"></add-question-modal>
+        </ng-template>
+    </ion-modal>
+</ion-content>

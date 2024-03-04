@@ -1,0 +1,16 @@
+<div class="add-question-modal__container">
+    <ion-icon
+        class="add-question-modal__close"
+        name="close-outline" slot="end"
+        (click)="closeModal.next()"></ion-icon>
+    <ion-input
+        [(ngModel)]="textControlValue"
+        label="Введите вопрос"
+        placeholder="Вопрос"
+        [required]="true"
+        fill="outline"
+        mode="md"
+        label-placement="stacked">
+    </ion-input>
+    <ion-button (click)="addQuestion()">Создать вопрос</ion-button>
+</div>

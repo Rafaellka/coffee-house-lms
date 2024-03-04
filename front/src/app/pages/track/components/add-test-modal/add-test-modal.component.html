@@ -1,0 +1,16 @@
+<div class="add-test-modal__container">
+    <ion-icon
+        class="add-test-modal__close"
+        name="close-outline" slot="end"
+        (click)="closeModal.next()"></ion-icon>
+    <ion-input
+        [(ngModel)]="nameControlValue"
+        label="Введите название теста"
+        placeholder="Название теста"
+        [required]="true"
+        fill="outline"
+        mode="md"
+        label-placement="stacked">
+    </ion-input>
+    <ion-button [disabled]="!nameControlValue" (click)="addTest()">Добавить курс</ion-button>
+</div>

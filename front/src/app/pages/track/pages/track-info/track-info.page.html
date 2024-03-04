@@ -11,7 +11,7 @@
         <ion-list [inset]="true">
             <div class="track-info-page__group-label">Список тестов</div>
             <ng-container *ngFor="let test of testList$ | async as list">
-                <ion-item>{{test.name}}</ion-item>
+                <ion-item button detail="true" detail-icon="caret-forward-outline" (click)="goToTest(test)">{{test.name}}</ion-item>
             </ng-container>
             <ion-button class="track-info-page__add-button" (click)="addTest()">Добавить тест</ion-button>
         </ion-list>
@@ -19,7 +19,7 @@
     <ion-modal [isOpen]="isAddModalOpen$ | async">
         <ng-template>
             <add-lecture-modal *ngIf="isLectureAdd" (newLectureAdd)="loadLectures()" (closeModal)="closeModal()" [trackId]="track.id"></add-lecture-modal>
-            <div *ngIf="!isLectureAdd">!isLectureAdd</div>
+            <add-test-modal *ngIf="!isLectureAdd" (newTestAdd)="loadTests()" (closeModal)="closeModal()" [trackId]="track.id"></add-test-modal>
         </ng-template>
     </ion-modal>
 </ion-content>

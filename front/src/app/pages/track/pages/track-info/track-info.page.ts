@@ -12,24 +12,25 @@ import { addIcons } from "ionicons";
 import { caretForwardOutline } from "ionicons/icons";
 import { AddLectureModalComponent } from "../../components/add-lecture-modal/add-lecture-modal.component";
 import { TrackModel } from "../../data/models/track.model";
+import { AddTestModalComponent } from "../../components/add-test-modal/add-test-modal.component";
+import { WithModalComponent } from "../../../../custom-modules/modal/with-modal.component";
 
 @Component({
 	templateUrl: './track-info.page.html',
 	standalone: true,
 	styleUrls: ['./styles/track-info.page.scss'],
-	imports: [HeaderComponent, IonContent, IonList, IonItem, CommonModule, IonButton, IonModal, AddLectureModalComponent]
+	imports: [HeaderComponent, IonContent, IonList, IonItem, CommonModule, IonButton, IonModal, AddLectureModalComponent, AddTestModalComponent]
 })
-export class TrackInfoPage implements OnInit {
+export class TrackInfoPage extends WithModalComponent implements OnInit {
 	public get track(): TrackModel {
 		return this._track;
 	}
+
 	public lectureList$: Observable<LectureModel[]>;
 	public testList$: Observable<TestModel[]>;
-	public isAddModalOpen$: Observable<boolean>;
 
 	public isLectureAdd: boolean = true;
 
-	private _isAddModalOpen$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 	private _testList$: BehaviorSubject<TestModel[]> = new BehaviorSubject<TestModel[]>([]);
 	private _lectureList$: BehaviorSubject<LectureModel[]> = new BehaviorSubject<LectureModel[]>([]);
 
@@ -39,9 +40,9 @@ export class TrackInfoPage implements OnInit {
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
 
 	constructor() {
+		super();
 		this.lectureList$ = this._lectureList$.asObservable();
 		this.testList$ = this._testList$.asObservable();
-		this.isAddModalOpen$ = this._isAddModalOpen$.asObservable();
 		addIcons({ caretForwardOutline });
 	}
 
@@ -64,18 +65,22 @@ export class TrackInfoPage implements OnInit {
 		});
 	}
 
+	public goToTest(test: TestModel): void {
+		this._router.navigate(['/test', test.id], {
+			state: {
+				test
+			}
+		});
+	}
+
 	public addLecture(): void {
-		this._isAddModalOpen$.next(true);
+		this.openModal();
 		this.isLectureAdd = true;
 	}
 
 	public addTest(): void {
-		this._isAddModalOpen$.next(true);
+		this.openModal();
 		this.isLectureAdd = false;
-	}
-
-	public closeModal(): void {
-		this._isAddModalOpen$.next(false);
 	}
 
 	public loadLectures(): void {
