@@ -1,0 +1,13 @@
+.question {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px;
+    align-items: flex-start;
+
+    &__answers {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}

@@ -1,10 +1,10 @@
-<div class="add-question-modal__container">
+<div [formGroup]="form" class="add-question-modal__container">
     <ion-icon
         class="add-question-modal__close"
         name="close-outline" slot="end"
         (click)="closeModal.next()"></ion-icon>
     <ion-input
-        [(ngModel)]="textControlValue"
+        formControlName="text"
         label="Введите вопрос"
         placeholder="Вопрос"
         [required]="true"
@@ -12,5 +12,27 @@
         mode="md"
         label-placement="stacked">
     </ion-input>
-    <ion-button (click)="addQuestion()">Создать вопрос</ion-button>
+    <ng-container *ngFor="let field of fields">
+        <ion-input
+            [formControlName]="field.label"
+            [label]="field.label"
+            [placeholder]="field.placeholder"
+            [required]="true"
+            fill="outline"
+            mode="md"
+            label-placement="stacked">
+        </ion-input>
+    </ng-container>
+    <ion-select
+        formControlName="rightAnswerId"
+        label="Выберите номер правильного ответа"
+        interface="popover"
+        placeholder="Номер правильного ответа"
+        [required]="true"
+        fill="outline"
+        mode="md"
+        label-placement="stacked">
+        <ion-select-option *ngFor="let id of [1, 2, 3, 4]" [value]="id">{{id}}</ion-select-option>
+    </ion-select>
+    <ion-button [disabled]="!form.valid" (click)="addQuestion()">Создать вопрос</ion-button>
 </div>

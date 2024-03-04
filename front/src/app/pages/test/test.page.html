@@ -1,9 +1,18 @@
 <app-header [title]="test.name"></app-header>
 <ion-content>
-    <ion-button (click)="openModal()">Добавить вопрос</ion-button>
+    <ion-list>
+        <ng-container *ngFor="let question of questions$ | async">
+            <question [model]="question"></question>
+        </ng-container>
+    </ion-list>
+    <ion-button class="test-page__button">Отправить на проверку</ion-button>
+    <ion-button class="test-page__button" (click)="openModal()">Добавить вопрос</ion-button>
     <ion-modal [isOpen]="isAddModalOpen$ | async">
         <ng-template>
-            <add-question-modal (closeModal)="closeModal()"></add-question-modal>
+            <add-question-modal
+                [testId]="test.id"
+                (newQuestionAdd)="loadQuestions()"
+                (closeModal)="closeModal()"></add-question-modal>
         </ng-template>
     </ion-modal>
 </ion-content>

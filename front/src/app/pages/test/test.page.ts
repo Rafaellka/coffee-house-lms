@@ -6,14 +6,15 @@ import { BehaviorSubject, Observable, take } from "rxjs";
 import { QuestionModel } from "./data/models/question.model";
 import { Router } from "@angular/router";
 import { TestModel } from "../track/data/models/test.model";
-import { IonButton, IonContent, IonModal } from "@ionic/angular/standalone";
+import { IonButton, IonContent, IonItem, IonList, IonModal, IonRadio } from "@ionic/angular/standalone";
 import { AddQuestionModalComponent } from "./components/add-question-modal/add-question-modal.component";
 import { WithModalComponent } from "../../custom-modules/modal/with-modal.component";
+import { QuestionComponent } from "./components/question/question.component";
 
 @Component({
 	templateUrl: './test.page.html',
 	standalone: true,
-	imports: [HeaderComponent, CommonModule, IonContent, IonButton, IonModal, AddQuestionModalComponent]
+	imports: [HeaderComponent, CommonModule, IonContent, IonButton, IonModal, AddQuestionModalComponent, IonList, QuestionComponent]
 })
 export class TestPage extends WithModalComponent implements OnInit {
 	public get test(): TestModel {
@@ -42,7 +43,7 @@ export class TestPage extends WithModalComponent implements OnInit {
 	}
 
 	public loadQuestions(): void {
-		this._testRequestService.getQuestionsList()
+		this._testRequestService.getQuestionsList(this._test.id)
 			.pipe(
 				take(1)
 			)

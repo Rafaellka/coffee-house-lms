@@ -1,8 +1,12 @@
 import express from "express";
-import {getQuestionsInTest} from "../controllers/question-controller.js";
+import {createQuestion, getQuestionsInTest} from "../controllers/question-controller.js";
 
 export const questionRouter = express.Router();
 
 questionRouter
     .route('/list')
     .get(getQuestionsInTest)
+
+questionRouter
+    .route('/create')
+    .post(createQuestion)

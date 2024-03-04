@@ -32,15 +32,15 @@ CREATE TABLE tests
 
 CREATE TABLE questions
 (
+    id SERIAL PRIMARY KEY,
     testId INTEGER NOT NULL,
-    text VARCHAR NOT NULL,
-    rightAnswerId INTEGER NOT NULL,
-    orderInTest INTEGER NOT NULL
+    text VARCHAR NOT NULL
 )
 
 CREATE TABLE answers
 (
     id SERIAL PRIMARY KEY,
     text VARCHAR NOT NULL,
-    questionId INTEGER NOT NULL
+    questionId INTEGER NOT NULL,
+    isRightAnswer BOOL NOT NULL
 )

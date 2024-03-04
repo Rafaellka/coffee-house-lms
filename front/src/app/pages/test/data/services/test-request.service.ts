@@ -11,8 +11,12 @@ import { QuestionModel } from "../models/question.model";
 export class TestRequestService {
 	private _httpClient: HttpClient = inject(HttpClient);
 
-	public getQuestionsList(): Observable<QuestionModel[]> {
-		return this._httpClient.get<IQuestion[]>(environment.apiUrl + 'question/list')
+	public getQuestionsList(testId: number): Observable<QuestionModel[]> {
+		return this._httpClient.get<IQuestion[]>(environment.apiUrl + 'question/list', {
+			params: {
+				testId
+			}
+		})
 			.pipe(
 				map((list: IQuestion[]) => list.map((item: IQuestion) => new QuestionModel(item)))
 			)
