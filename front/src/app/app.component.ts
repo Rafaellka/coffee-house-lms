@@ -27,8 +27,9 @@ export class AppComponent implements OnInit {
 	private _router: Router = inject(Router);
 	private _userProgressService: UserProgressService = inject(UserProgressService);
 	private _trackStateService: TrackStateService = inject(TrackStateService);
+
 	constructor() {
-		addIcons({personOutline, fileTrayFullOutline})
+		addIcons({ personOutline, fileTrayFullOutline })
 	}
 
 	public ngOnInit(): void {
@@ -42,10 +43,15 @@ export class AppComponent implements OnInit {
 	}
 
 	public profileClick(): void {
-		this._userProgressService.loadProgress$.next();
+		if (!this._userInfo$.value.isCreator) {
+			this._userProgressService.loadProgress$.next();
+		}
 	}
+
 	public tracksClick(): void {
-		this._trackStateService.checkForTrackComplete$.next();
+		if (!this._userInfo$.value.isCreator) {
+			this._trackStateService.checkForTrackComplete$.next();
+		}
 	}
 
 }

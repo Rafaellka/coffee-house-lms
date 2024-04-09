@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from "@angular/core";
-import { BehaviorSubject, Observable, startWith, switchMap, take, tap } from "rxjs";
+import { BehaviorSubject, forkJoin, Observable, startWith, switchMap, take, tap } from "rxjs";
 import { TrackModel } from "../../data/models/track.model";
 import { TrackRequestService } from "../../data/services/track-request.service";
 import { AsyncPipe, CommonModule } from "@angular/common";
@@ -52,18 +52,21 @@ export class TrackListPage implements OnInit {
 	}
 
 	public loadTrackList(): void {
-		this._trackRequestService.getTrackList()
+		forkJoin([
+			this._trackRequestService.getUserPassedTracks(),
+			this._trackRequestService.getTrackList()
+		])
 			.pipe(
 				take(1),
-				tap((list: TrackModel[]) => {
-					this._trackList$.next(list);
-				}),
-				switchMap(() => this._trackRequestService.getUserPassedTracks())
 			)
-			.subscribe((passedTrackIds: number[]) => {
+			.subscribe(([passedTrackIds, tracks]) => {
 				passedTrackIds.forEach((id: number) => {
-					this._trackList$.value.find((item) => item.id === id).passed = true;
-				})
+					const currentTrack = tracks.find((item) => item.id === id);
+					if (currentTrack) {
+						currentTrack.passed = true;
+					}
+				});
+				this._trackList$.next(tracks);
 			});
 	}
 }

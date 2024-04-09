@@ -58,6 +58,9 @@ export class LecturePage implements OnInit {
 			.pipe(
 				take(1)
 			)
-			.subscribe();
+			.subscribe(() => {
+				this._lectureStateService.loadLectures$.next();
+				this._router.navigate(['tracks/track-info', this._lecture.trackId])
+			});
 	}
 }

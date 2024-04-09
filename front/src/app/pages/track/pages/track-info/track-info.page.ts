@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { HeaderComponent } from "../../../../custom-modules/header/header.component";
 import { IonButton, IonContent, IonItem, IonList, IonModal } from "@ionic/angular/standalone";
 import { Router } from "@angular/router";
@@ -116,43 +116,43 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 	}
 
 	public loadLectures(): void {
-		this._trackRequestService.getLecturesInTrack(this._track.id)
+		forkJoin([
+			this._trackRequestService.getUserPassedLectures(),
+			this._trackRequestService.getLecturesInTrack(this._track.id)
+		])
 			.pipe(
-				take(1),
-				tap((lectures: LectureModel[]) => {
-					this._lectureList$.next(lectures);
-					this._lectureStateService.setLectureList(lectures);
-				}),
-				switchMap(() => this._trackRequestService.getUserPassedLectures())
+				take(1)
 			)
-			.subscribe((passedLectureIds: number[]) => {
+			.subscribe(([passedLectureIds, lectures]) => {
 				passedLectureIds.forEach((lectureId: number) => {
-					const currentLecture: LectureModel | undefined = this._lectureList$.value.find((lecture: LectureModel) => lecture.id === lectureId);
+					const currentLecture: LectureModel | undefined = lectures.find((lecture: LectureModel) => lecture.id === lectureId);
 					if (currentLecture) {
 						currentLecture.passed = true;
 					}
 				});
+				this._lectureList$.next(lectures);
+				this._lectureStateService.setLectureList(lectures);
 				this._lecturesLoaded$.next();
 				this._lecturesLoaded$.complete();
 			});
 	}
 
 	public loadTests(): void {
-		this._trackRequestService.getTestsInTrack(this._track.id)
+		forkJoin([
+			this._trackRequestService.getUserPassedTests(),
+			this._trackRequestService.getTestsInTrack(this._track.id)
+		])
 			.pipe(
-				take(1),
-				tap((tests) => {
-					this._testList$.next(tests);
-				}),
-				switchMap(() => this._trackRequestService.getUserPassedTests())
+				take(1)
 			)
-			.subscribe((passedTestIds: number[]) => {
+			.subscribe(([passedTestIds, tests]) => {
 				passedTestIds.forEach((testId: number) => {
-					const currentTest: TestModel | undefined = this._testList$.value.find((test: TestModel) => test.id === testId);
-					if (currentTest) {
-						currentTest.passed = true;
+					const currentLecture: TestModel | undefined = tests.find((test: TestModel) => test.id === testId);
+					if (currentLecture) {
+						currentLecture.passed = true;
 					}
-				})
+				});
+				this._testList$.next(tests);
 				this._testsLoaded$.next();
 				this._testsLoaded$.complete();
 			});
@@ -164,6 +164,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 				take(1)
 			)
 			.subscribe(() => {
+				this._trackStateService.loadTracks$.next();
 				this._router.navigate(['tracks']);
 			})
 	}
