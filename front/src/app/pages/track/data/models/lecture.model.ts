@@ -7,6 +7,7 @@ export class LectureModel implements ILectureResponseModel {
 	public trackId: number;
 	public videoUrl: string;
 	public text: string;
+	public passed?: boolean;
 
 	constructor(data: ILectureResponseModel) {
 		this.id = data.id;

@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { IonicModule } from "@ionic/angular";
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { AuthRequestService } from "./pages/auth/data/services/auth-request.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -22,13 +22,15 @@ export class AppComponent implements OnInit {
 	];
 	private _userInfo$: BehaviorSubject<UserModel | null> = inject(USER_INFO_TOKEN);
 	private _destroyRef = inject(DestroyRef);
+	private _router: Router = inject(Router);
 
 	public ngOnInit(): void {
-		const user: string | null = sessionStorage.getItem('user');
+		const user: string | null = localStorage.getItem('user');
 		if (user) {
 			const userModel: UserModel = new UserModel(JSON.parse(user));
 			this._userInfo$.next(userModel);
 			this.authRequestService.setAuthorized(true);
+			this._router.navigate(['profile']);
 		}
 	}
 }

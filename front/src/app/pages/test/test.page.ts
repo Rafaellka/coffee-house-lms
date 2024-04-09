@@ -6,10 +6,13 @@ import { BehaviorSubject, Observable, take } from "rxjs";
 import { QuestionModel } from "./data/models/question.model";
 import { Router } from "@angular/router";
 import { TestModel } from "../track/data/models/test.model";
-import { IonButton, IonContent, IonItem, IonList, IonModal, IonRadio } from "@ionic/angular/standalone";
+import { IonButton, IonContent, IonList, IonModal } from "@ionic/angular/standalone";
 import { AddQuestionModalComponent } from "./components/add-question-modal/add-question-modal.component";
 import { WithModalComponent } from "../../custom-modules/modal/with-modal.component";
 import { QuestionComponent } from "./components/question/question.component";
+import { IResultItem } from "./interfaces/result-item.interface";
+import { TestStateService } from "./services/test-state.service";
+import { AnswerModel } from "./data/models/answer.model";
 
 @Component({
 	templateUrl: './test.page.html',
@@ -21,21 +24,21 @@ export class TestPage extends WithModalComponent implements OnInit {
 	public get test(): TestModel {
 		return this._test;
 	}
+	public get checkAnswersDisabled(): boolean {
+		return this._results.some((result: IResultItem) => !result.answer);
+	}
 	public questions$: Observable<QuestionModel[]>;
 	private _questions$: BehaviorSubject<QuestionModel[]> = new BehaviorSubject<QuestionModel[]>([]);
 	private _testRequestService: TestRequestService = inject(TestRequestService);
 	private _router: Router = inject(Router);
+	private _testStateService: TestStateService = inject(TestStateService);
+	private _results: IResultItem[] = [];
 
 	private readonly _test!: TestModel;
 
 	constructor() {
 		super();
-		const state = this._router.getCurrentNavigation()?.extras.state;
-		if (!state) {
-			this._router.navigate(['/tracks']);
-		} else {
-			this._test = state['test'];
-		}
+		this._test = this._testStateService.currentTest;
 		this.questions$ = this._questions$.asObservable();
 	}
 
@@ -51,7 +54,22 @@ export class TestPage extends WithModalComponent implements OnInit {
 			.subscribe({
 				next: (questions: QuestionModel[]) => {
 					this._questions$.next(questions);
+					questions.forEach((question) => {
+						this._results.push({
+							question: question
+						});
+					})
 				}
 			})
+	}
+
+	public setResult(answer: AnswerModel, questionId: number): void {
+		const result = this._results.find((item: IResultItem) => item.question.id === questionId);
+		result.answer = answer;
+	}
+
+	public checkResults(): void {
+		this._testStateService.currentTestResults = this._results;
+		this._router.navigate(['results']);
 	}
 }

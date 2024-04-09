@@ -1,6 +1,6 @@
 import { IAnswer } from "../interfaces/answer.interface";
 
-export class AnswerModel implements IAnswer {
+export class AnswerModel {
 	public isRightAnswer: boolean;
 	public text: string;
 	public questionId: number;
@@ -8,7 +8,7 @@ export class AnswerModel implements IAnswer {
 
 	constructor(data: IAnswer) {
 		this.text = data.text;
-		this.isRightAnswer = data.isRightAnswer;
+		this.isRightAnswer = data.isrightanswer;
 		this.questionId = data.questionId;
 		this.id = data.id;
 	}

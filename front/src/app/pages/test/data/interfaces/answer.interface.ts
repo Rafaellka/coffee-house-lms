@@ -1,6 +1,6 @@
 export interface IAnswer {
 	text: string;
-	isRightAnswer: boolean;
+	isrightanswer: boolean;
 	questionId: number;
 	id: number;
 }

@@ -6,5 +6,9 @@
             Текстовая лекция
         </h3>
         <div>{{lecture.text}}</div>
+        <div>
+            <ion-button *ngIf="!isLastLecture" (click)="goToNextLecture()">Следующая лекция</ion-button>
+            <ion-button (click)="goToTrack()">Вернуться к курсу</ion-button>
+        </div>
     </div>
 </ion-content>

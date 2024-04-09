@@ -1,8 +1,14 @@
 <div class="question">
     <div>Вопрос: {{model.text}}</div>
-    <ion-radio-group class="question__answers">
-        <ion-radio *ngFor="let answer of model.answers" [value]="answer.id" labelPlacement="end" justify="start">
-            {{answer.text}}
-        </ion-radio>
+    <ion-radio-group class="question__answers" [value]="currentValue">
+        <ng-container *ngFor="let answer of model.answers">
+            <ion-radio
+                [value]="answer.id"
+                (click)="selectItem(answer)"
+                labelPlacement="end"
+                justify="start">
+                {{answer.text}}
+            </ion-radio>
+        </ng-container>
     </ion-radio-group>
 </div>

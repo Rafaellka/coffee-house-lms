@@ -33,6 +33,11 @@ export const routes: Routes = [
 		canActivate: [authGuard]
 	},
 	{
+		path: 'results',
+		loadChildren: () => import('./pages/test-results/test-results.routes').then((m) => m.routes),
+		canActivate: [authGuard]
+	},
+	{
 		path: '**',
 		redirectTo: 'auth',
 	}

@@ -20,7 +20,6 @@ export class AuthRequestService {
 	private _isAuthorized$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 	private _httpClient: HttpClient = inject(HttpClient);
 	private _userInfo$: BehaviorSubject<UserModel | null> = inject(USER_INFO_TOKEN);
-
 	constructor() {
 		this.isAuthorized$ = this._isAuthorized$.asObservable();
 	}
@@ -36,7 +35,7 @@ export class AuthRequestService {
 					if (res.loggedIn) {
 						const userModel: UserModel = new UserModel(res.user);
 						this._userInfo$.next(userModel);
-						sessionStorage.setItem('user', JSON.stringify(res.user));
+						localStorage.setItem('user', JSON.stringify(res.user));
 						this._isAuthorized$.next(true);
 					}
 				}),

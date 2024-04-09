@@ -1,10 +1,15 @@
 .track-info-page {
     &__group-label {
-        margin: 10px 15px;
+        margin: 10px 0;
         font-size: 18px;
     }
 
     &__add-button {
-        padding: 10px;
+        maring-top: 10px;
+    }
+
+    &__item {
+        border-radius: 4px;
+        margin-bottom: 5px;
     }
 }

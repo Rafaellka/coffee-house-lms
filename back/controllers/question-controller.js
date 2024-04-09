@@ -22,8 +22,8 @@ export const createQuestion = async (req, res) => {
     const {text, testId, answers} = req.body;
     const result = await pool.query("INSERT INTO questions(text, testId) VALUES ($1, $2) RETURNING id", [text, testId]);
     const id = result.rows[0].id;
-    answers.forEach(async ({text, isRightAnswer}) => {
-        await pool.query("INSERT INTO answers(text, questionId, isRightAnswer) VALUES ($1, $2, $3) RETURNING id", [text, id, isRightAnswer]);
+    answers.forEach(async ({text, isrightanswer}) => {
+        await pool.query("INSERT INTO answers(text, questionId, isrightanswer) VALUES ($1, $2, $3) RETURNING id", [text, id, isrightanswer]);
     });
     res.json();
 }

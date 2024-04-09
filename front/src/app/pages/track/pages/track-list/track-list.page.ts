@@ -27,6 +27,7 @@ export class TrackListPage implements OnInit {
 
 	public ngOnInit(): void {
 		this.loadTrackList();
+		this.loadUserPassedTracks();
 	}
 
 	public openModal(): void {
@@ -45,5 +46,13 @@ export class TrackListPage implements OnInit {
 			.subscribe((list: TrackModel[]) => {
 				this._trackList$.next(list);
 			});
+	}
+
+	public loadUserPassedTracks(): void {
+		this._trackRequestService.getUserPassedTracks()
+			.pipe(
+				take(1)
+			)
+			.subscribe(() => {});
 	}
 }

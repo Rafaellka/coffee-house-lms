@@ -4,7 +4,7 @@ import { IonButton, IonContent, IonItem, IonLabel, IonList, IonModal } from "@io
 import { ActivatedRoute, Router } from "@angular/router";
 import { TrackRequestService } from "../../data/services/track-request.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { BehaviorSubject, Observable, take } from "rxjs";
+import { BehaviorSubject, Observable, switchMap, take, tap } from "rxjs";
 import { LectureModel } from "../../data/models/lecture.model";
 import { TestModel } from "../../data/models/test.model";
 import { CommonModule } from "@angular/common";
@@ -14,6 +14,8 @@ import { AddLectureModalComponent } from "../../components/add-lecture-modal/add
 import { TrackModel } from "../../data/models/track.model";
 import { AddTestModalComponent } from "../../components/add-test-modal/add-test-modal.component";
 import { WithModalComponent } from "../../../../custom-modules/modal/with-modal.component";
+import { TestStateService } from "../../../test/services/test-state.service";
+import { LectureStateService } from "../../../lecture/services/lecture-state.service";
 
 @Component({
 	templateUrl: './track-info.page.html',
@@ -38,6 +40,8 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 
 	private _router: Router = inject(Router);
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
+	private _testStateService: TestStateService = inject(TestStateService);
+	private _lectureStateService: LectureStateService = inject(LectureStateService);
 
 	constructor() {
 		super();
@@ -57,20 +61,14 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 		}
 	}
 
-	public gotToLecture(lecture: LectureModel): void {
-		this._router.navigate(['/lecture', lecture.id], {
-			state: {
-				lecture
-			}
-		});
+	public gotToLecture(lecture: LectureModel, index: number): void {
+		this._lectureStateService.currentLecture = lecture;
+		this._router.navigate(['/lecture', lecture.id]);
 	}
 
 	public goToTest(test: TestModel): void {
-		this._router.navigate(['/test', test.id], {
-			state: {
-				test
-			}
-		});
+		this._testStateService.currentTest = test;
+		this._router.navigate(['/test', test.id]);
 	}
 
 	public addLecture(): void {
@@ -86,20 +84,33 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 	public loadLectures(): void {
 		this._trackRequestService.getLecturesInTrack(this._track.id)
 			.pipe(
-				take(1)
+				take(1),
+				tap((lectures: LectureModel[]) => {
+					this._lectureList$.next(lectures);
+					this._lectureStateService.setLectureList(lectures);
+				}),
+				switchMap(() => this._trackRequestService.getUserPassedLectures())
 			)
-			.subscribe((lectures: LectureModel[]) => {
-				this._lectureList$.next(lectures);
+			.subscribe((passedLectureIds: number[] ) => {
+				passedLectureIds.forEach((testId: number) => {
+					this._lectureList$.value.find((lecture: LectureModel) => lecture.id === testId).passed = true;
+				});
 			});
 	}
 
 	public loadTests(): void {
 		this._trackRequestService.getTestsInTrack(this._track.id)
 			.pipe(
-				take(1)
+				take(1),
+				tap((tests) => {
+					this._testList$.next(tests);
+				}),
+				switchMap(() => this._trackRequestService.getUserPassedTests())
 			)
-			.subscribe((tests) => {
-				this._testList$.next(tests);
+			.subscribe((passedTestIds: number[]) => {
+				passedTestIds.forEach((testId: number) => {
+					this._testList$.value.find((test: TestModel) => test.id === testId).passed = true;
+				})
 			});
 	}
 }

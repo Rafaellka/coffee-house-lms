@@ -3,15 +3,27 @@
     <div>
         <ion-list [inset]="true">
             <div class="track-info-page__group-label">Список лекций</div>
-            <ng-container *ngFor="let lecture of lectureList$ | async as list">
-                <ion-item button detail="true" detail-icon="caret-forward-outline" (click)="gotToLecture(lecture)">{{lecture.name}}</ion-item>
+            <ng-container *ngFor="let lecture of lectureList$ | async as list; let index = index">
+                <ion-item
+                    button
+                    detail="true"
+                    class="track-info-page__item"
+                    detail-icon="caret-forward-outline"
+                    [color]="lecture.passed ? 'success' : 'light'"
+                    (click)="gotToLecture(lecture, index)">{{lecture.name}}</ion-item>
             </ng-container>
             <ion-button class="track-info-page__add-button" (click)="addLecture()">Добавить лекцию</ion-button>
         </ion-list>
         <ion-list [inset]="true">
             <div class="track-info-page__group-label">Список тестов</div>
             <ng-container *ngFor="let test of testList$ | async as list">
-                <ion-item button detail="true" detail-icon="caret-forward-outline" (click)="goToTest(test)">{{test.name}}</ion-item>
+                <ion-item
+                    button
+                    detail="true"
+                    class="track-info-page__item"
+                    detail-icon="caret-forward-outline"
+                    [color]="test.passed ? 'success' : 'light'"
+                    (click)="goToTest(test)">{{test.name}}</ion-item>
             </ng-container>
             <ion-button class="track-info-page__add-button" (click)="addTest()">Добавить тест</ion-button>
         </ion-list>

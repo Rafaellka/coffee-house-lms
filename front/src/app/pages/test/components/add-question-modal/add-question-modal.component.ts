@@ -75,7 +75,7 @@ export class AddQuestionModalComponent {
 				id: answer.id,
 				questionId: 0,
 				text: formValue,
-				isRightAnswer: rightAnswerId === answer.id
+				isrightanswer: rightAnswerId === answer.id
 			}
 		});
 		this._testRequestService.createQuestion({

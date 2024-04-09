@@ -1,21 +1,23 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { map, Observable, of } from "rxjs";
+import { BehaviorSubject, map, Observable, of } from "rxjs";
 import { ITrackResponseModel } from "../response-models/track.response-model";
 import { TrackModel } from "../models/track.model";
 import { environment } from "../../../../../environments/environment";
 import { IAddTrackRequestModel } from "../request-models/add-track.request-model";
-import { ITrackInfoResponseModel } from "../response-models/track-info.response-model";
 import { LectureModel } from "../models/lecture.model";
 import { ILectureResponseModel } from "../response-models/lecture.response-model";
 import { ITestResponseModel } from "../response-models/test.response-model";
 import { TestModel } from "../models/test.model";
 import { IAddLectureRequestModel } from "../request-models/add-lecture.request-model";
 import { IAddTestRequestModel } from "../request-models/add-test.request-model";
+import { UserModel } from "../../../auth/data/models/user.model";
+import { USER_INFO_TOKEN } from "../../../auth/tokens/user-info.token";
 
 @Injectable()
 export class TrackRequestService {
 	private _httpClient: HttpClient = inject(HttpClient);
+	private _userInfo$: BehaviorSubject<UserModel> = inject(USER_INFO_TOKEN);
 
 	public getTrackList(): Observable<TrackModel[]> {
 		return this._httpClient.get<ITrackResponseModel[]>(environment.apiUrl + 'track/list')
@@ -58,5 +60,27 @@ export class TrackRequestService {
 		return this._httpClient.post<void>(environment.apiUrl + 'test/add', data);
 	}
 
+	public getUserPassedTracks(): Observable<number[]> {
+		return this._httpClient.get<number[]>(environment.apiUrl + 'user-track/list', {
+			params: {
+				userId: this._userInfo$.value.id
+			}
+		})
+	}
 
+	public getUserPassedLectures(): Observable<number[]> {
+		return this._httpClient.get<number[]>(environment.apiUrl + 'user-lecture/list', {
+			params: {
+				userId: this._userInfo$.value.id
+			}
+		})
+	}
+
+	public getUserPassedTests(): Observable<number[]> {
+		return this._httpClient.get<number[]>(environment.apiUrl + 'user-test/list', {
+			params: {
+				userId: this._userInfo$.value.id
+			}
+		})
+	}
 }

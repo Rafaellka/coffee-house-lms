@@ -2,7 +2,7 @@ import { IQuestion } from "../interfaces/question.interface";
 import { AnswerModel } from "./answer.model";
 import { IAnswer } from "../interfaces/answer.interface";
 
-export class QuestionModel implements IQuestion {
+export class QuestionModel {
 	public text: string;
 	public answers: AnswerModel[];
 	public testId: number;
