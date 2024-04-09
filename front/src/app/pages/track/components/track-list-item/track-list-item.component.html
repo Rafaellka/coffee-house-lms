@@ -1,4 +1,4 @@
-<ion-card color="primary" [button]="true" (click)="goToTrackInfo()">
+<ion-card [color]="model.passed ? 'success' : 'primary'" [button]="true" (click)="goToTrackInfo()">
     <ion-card-header>
         <ion-card-title>{{model.name}}</ion-card-title>
     </ion-card-header>

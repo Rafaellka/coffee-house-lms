@@ -8,6 +8,14 @@ export const saveUserPassedTrack = async (req, res) => {
     res.json();
 }
 
+export const userFailedTrack = async (req, res) => {
+    const trackId = req.body.trackId;
+    const userId = req.body.userId;
+    const userTrack = await pool.query("DELETE FROM userTrack WHERE userid=$1 AND trackid=$2 ", [userId, trackId]);
+
+    res.json();
+}
+
 export const getUserPassedTracks = async (req, res) => {
     const userId = req.query.userId;
     const passedTracks = await pool.query("SELECT * FROM userTrack WHERE userid=$1", [userId]);

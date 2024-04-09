@@ -27,6 +27,7 @@
             </ng-container>
             <ion-button *ngIf="isCreator" class="track-info-page__add-button" (click)="addTest()">Добавить тест</ion-button>
         </ion-list>
+        <ion-button *ngIf="isCreator" [color]="'danger'" (click)="deleteTrack()">Удалить курс</ion-button>
     </div>
     <ion-modal [isOpen]="isAddModalOpen$ | async">
         <ng-template>

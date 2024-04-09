@@ -22,6 +22,10 @@ export class AuthRequestService {
 	private _userInfo$: BehaviorSubject<UserModel | null> = inject(USER_INFO_TOKEN);
 	constructor() {
 		this.isAuthorized$ = this._isAuthorized$.asObservable();
+		this._userInfo$
+			.subscribe((value: UserModel | null) => {
+				this.setAuthorized(!!value);
+			})
 	}
 
 	public setAuthorized(isAuthorized: boolean): void {

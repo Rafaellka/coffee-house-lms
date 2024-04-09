@@ -37,3 +37,11 @@ export const getTestInTrack = async (req, res) => {
     }))
     res.json(testRows);
 }
+
+export const deleteTrack = async (req, res) => {
+    const trackId = req.query.trackId;
+    await pool.query("DELETE FROM tracks WHERE id=$1", [trackId]);
+    await pool.query("DELETE FROM userTrack WHERE trackid=$1", [trackId]);
+
+    res.json();
+}

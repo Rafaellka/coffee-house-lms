@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from "@angular/core";
-import { BehaviorSubject, Observable, take } from "rxjs";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import { BehaviorSubject, Observable, startWith, switchMap, take, tap } from "rxjs";
 import { TrackModel } from "../../data/models/track.model";
 import { TrackRequestService } from "../../data/services/track-request.service";
 import { AsyncPipe, CommonModule } from "@angular/common";
@@ -8,6 +8,8 @@ import { HeaderComponent } from "../../../../custom-modules/header/header.compon
 import { TrackListItemComponent } from "../../components/track-list-item/track-list-item.component";
 import { AddTrackModalComponent } from "../../components/add-track-modal/add-track-modal.component";
 import { USER_INFO_TOKEN } from "../../../auth/tokens/user-info.token";
+import { TrackStateService } from "../../services/track-state.service";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
 	templateUrl: './track-list.page.html',
@@ -21,7 +23,9 @@ export class TrackListPage implements OnInit {
 	public trackList$: Observable<TrackModel[]>;
 	private _trackList$: BehaviorSubject<TrackModel[]> = new BehaviorSubject<TrackModel[]>([]);
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
+	private _trackStateService: TrackStateService = inject(TrackStateService);
 	private _isAddTrackModalOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	private _destroyRef: DestroyRef = inject(DestroyRef);
 
 	constructor() {
 		this.trackList$ = this._trackList$.asObservable();
@@ -29,8 +33,14 @@ export class TrackListPage implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		this.loadTrackList();
-		this.loadUserPassedTracks();
+		this._trackStateService.loadTracks$
+			.pipe(
+				startWith(null),
+				takeUntilDestroyed(this._destroyRef)
+			)
+			.subscribe(() => {
+				this.loadTrackList();
+			});
 	}
 
 	public openModal(): void {
@@ -44,18 +54,16 @@ export class TrackListPage implements OnInit {
 	public loadTrackList(): void {
 		this._trackRequestService.getTrackList()
 			.pipe(
-				take(1)
+				take(1),
+				tap((list: TrackModel[]) => {
+					this._trackList$.next(list);
+				}),
+				switchMap(() => this._trackRequestService.getUserPassedTracks())
 			)
-			.subscribe((list: TrackModel[]) => {
-				this._trackList$.next(list);
+			.subscribe((passedTrackIds: number[]) => {
+				passedTrackIds.forEach((id: number) => {
+					this._trackList$.value.find((item) => item.id === id).passed = true;
+				})
 			});
-	}
-
-	public loadUserPassedTracks(): void {
-		this._trackRequestService.getUserPassedTracks()
-			.pipe(
-				take(1)
-			)
-			.subscribe(() => {});
 	}
 }

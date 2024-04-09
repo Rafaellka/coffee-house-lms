@@ -83,4 +83,26 @@ export class TrackRequestService {
 			}
 		})
 	}
+
+	public setTrackPassed(track: TrackModel): Observable<void> {
+		return this._httpClient.post<void>(environment.apiUrl + 'user-track/passed', {
+			trackId: track.id,
+			userId: this._userInfo$.value.id
+		});
+	}
+
+	public setTrackFailed(track: TrackModel): Observable<void> {
+		return this._httpClient.post<void>(environment.apiUrl + 'user-track/failed', {
+			trackId: track.id,
+			userId: this._userInfo$.value.id
+		});
+	}
+
+	public deleteTrack(track: TrackModel): Observable<any> {
+		return this._httpClient.delete<void>(environment.apiUrl + 'track/delete', {
+			params: {
+				trackId: track.id
+			}
+		});
+	}
 }

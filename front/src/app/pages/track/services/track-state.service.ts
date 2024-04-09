@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 import { TrackModel } from "../data/models/track.model";
 
 @Injectable({
@@ -13,5 +13,8 @@ export class TrackStateService {
 	public get currentTrack(): TrackModel | null {
 		return this._currentTrackBhs$.value;
 	}
+
+	public loadTracks$: Subject<void> = new Subject<void>();
+
 	private _currentTrackBhs$: BehaviorSubject<TrackModel | null> = new BehaviorSubject<TrackModel | null>(null);
 }

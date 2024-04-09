@@ -1,10 +1,10 @@
 import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { HeaderComponent } from "../../../../custom-modules/header/header.component";
-import { IonButton, IonContent, IonItem, IonLabel, IonList, IonModal } from "@ionic/angular/standalone";
-import { ActivatedRoute, Router, RoutesRecognized } from "@angular/router";
+import { IonButton, IonContent, IonItem, IonList, IonModal } from "@ionic/angular/standalone";
+import { Router } from "@angular/router";
 import { TrackRequestService } from "../../data/services/track-request.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { BehaviorSubject, filter, Observable, startWith, switchMap, take, tap } from "rxjs";
+import { BehaviorSubject, forkJoin, Observable, startWith, Subject, switchMap, take, tap } from "rxjs";
 import { LectureModel } from "../../data/models/lecture.model";
 import { TestModel } from "../../data/models/test.model";
 import { CommonModule } from "@angular/common";
@@ -29,6 +29,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 	public get track(): TrackModel {
 		return this._track;
 	}
+
 	public readonly isCreator: boolean = inject(USER_INFO_TOKEN).value.isCreator;
 
 	public lectureList$: Observable<LectureModel[]>;
@@ -43,10 +44,15 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 
 	private _router: Router = inject(Router);
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
+
 	private _testStateService: TestStateService = inject(TestStateService);
 	private _lectureStateService: LectureStateService = inject(LectureStateService);
 	private _trackStateService: TrackStateService = inject(TrackStateService);
+
 	private _destroyRef: DestroyRef = inject(DestroyRef);
+
+	private _lecturesLoaded$: Subject<void> = new Subject<void>();
+	private _testsLoaded$: Subject<void> = new Subject<void>();
 
 	constructor() {
 		super();
@@ -57,6 +63,28 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this._track = this._trackStateService.currentTrack;
+		if (!this.isCreator) {
+			forkJoin([
+				this._lecturesLoaded$.asObservable(),
+				this._testsLoaded$.asObservable()
+			])
+				.pipe(
+					takeUntilDestroyed(this._destroyRef)
+				)
+				.subscribe(() => {
+					if (this._testList$.value.every((test) => test.passed) && this._lectureList$.value.every((lecture) => lecture.passed)) {
+						this._trackRequestService.setTrackPassed(this._track)
+							.subscribe(() => {
+								this._trackStateService.loadTracks$.next();
+							});
+					} else {
+						this._trackRequestService.setTrackFailed(this._track)
+							.subscribe(() => {
+								this._trackStateService.loadTracks$.next();
+							});
+					}
+				})
+		}
 		this._lectureStateService.loadLectures$
 			.pipe(
 				startWith(null),
@@ -72,7 +100,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 			)
 			.subscribe(() => {
 				this.loadTests();
-			})
+			});
 	}
 
 	public gotToLecture(lecture: LectureModel, index: number): void {
@@ -107,8 +135,13 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 			)
 			.subscribe((passedLectureIds: number[]) => {
 				passedLectureIds.forEach((lectureId: number) => {
-					this._lectureList$.value.find((lecture: LectureModel) => lecture.id === lectureId).passed = true;
+					const currentLecture: LectureModel | undefined = this._lectureList$.value.find((lecture: LectureModel) => lecture.id === lectureId);
+					if (currentLecture) {
+						currentLecture.passed = true;
+					}
 				});
+				this._lecturesLoaded$.next();
+				this._lecturesLoaded$.complete();
 			});
 	}
 
@@ -123,8 +156,22 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 			)
 			.subscribe((passedTestIds: number[]) => {
 				passedTestIds.forEach((testId: number) => {
-					this._testList$.value.find((test: TestModel) => test.id === testId).passed = true;
+					const currentTest: TestModel | undefined = this._testList$.value.find((test: TestModel) => test.id === testId);
+					if (currentTest) {
+						currentTest.passed = true;
+					}
 				})
+				this._testsLoaded$.next();
+				this._testsLoaded$.complete();
 			});
+	}
+	public deleteTrack(): void {
+		this._trackRequestService.deleteTrack(this._track)
+			.pipe(
+				take(1)
+			)
+			.subscribe(() => {
+				this._router.navigate(['tracks']);
+			})
 	}
 }

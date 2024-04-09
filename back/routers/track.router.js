@@ -1,6 +1,6 @@
 import express from "express";
 import {
-    addTrack,
+    addTrack, deleteTrack,
     getLecturesInTrack, getTestInTrack,
     getTrackList
 } from "../controllers/track-controller.js";
@@ -22,3 +22,7 @@ trackRouter
 trackRouter
     .route('/tests')
     .get(getTestInTrack)
+
+trackRouter
+    .route('/delete')
+    .delete(deleteTrack)

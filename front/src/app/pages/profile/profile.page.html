@@ -1,1 +1,21 @@
 <app-header [title]="'Профиль'"></app-header>
+<ion-content>
+    <div class="profile">
+        <div class="profile__user-info">
+            <img src=""/>
+            <div class="profile__user-details">
+                <div>ФИО: {{userInfo.name}}</div>
+                <div>Должность: {{userInfo.role | userRole}}</div>
+            </div>
+        </div>
+        <div class="profile__progress">
+            <div>Прогресс</div>
+            <div>
+                <div>Пройдено курсов:</div>
+                <div>Пройдено лекций:</div>
+                <div>Пройдено тестов:</div>
+            </div>
+        </div>
+        <ion-button [color]="'danger'" (click)="exit()">Выйти</ion-button>
+    </div>
+</ion-content>
