@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { BehaviorSubject, Observable, startWith, switchMap, take, tap } from "rxjs";
 import { TrackModel } from "../../data/models/track.model";
 import { TrackRequestService } from "../../data/services/track-request.service";

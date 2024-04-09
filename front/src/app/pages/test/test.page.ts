@@ -85,6 +85,9 @@ export class TestPage extends WithModalComponent implements OnInit {
 			.pipe(
 				take(1)
 			)
-			.subscribe();
+			.subscribe(() => {
+				this._testStateService.loadTests$.next();
+				this._router.navigate(['tracks/track-info', this._test.trackId])
+			});
 	}
 }

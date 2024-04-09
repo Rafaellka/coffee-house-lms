@@ -16,5 +16,7 @@ export class TrackStateService {
 
 	public loadTracks$: Subject<void> = new Subject<void>();
 
+	public checkForTrackComplete$: Subject<void> = new Subject<void>();
+
 	private _currentTrackBhs$: BehaviorSubject<TrackModel | null> = new BehaviorSubject<TrackModel | null>(null);
 }

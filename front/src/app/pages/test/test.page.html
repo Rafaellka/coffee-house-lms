@@ -13,7 +13,7 @@
         class="test-page__button"
         (click)="deleteTest()"
         [color]="'danger'">Удалить тест</ion-button>
-    <ion-modal [isOpen]="isAddModalOpen$ | async">
+    <ion-modal [isOpen]="isAddModalOpen$ | async" (didDismiss)="closeModal()">
         <ng-template>
             <add-question-modal
                 [testId]="test.id"

@@ -35,6 +35,7 @@ export class TestResultPage implements OnInit {
 	}
 
 	public goToTrack(): void {
+		this._testStateService.loadTests$.next();
 		this._router.navigate(['tracks/track-info', this.test.trackId]);
 	}
 }

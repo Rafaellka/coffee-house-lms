@@ -1,12 +1,16 @@
 import express from "express";
-import {addTest, deleteTest} from "../controllers/test-controller.js";
+import {addTest, deleteTest, getAllTests} from "../controllers/test-controller.js";
 
 export const testRouter = express.Router();
 
 testRouter
     .route('/add')
-    .post(addTest)
+    .post(addTest);
 
 testRouter
     .route('/delete')
-    .delete(deleteTest)
+    .delete(deleteTest);
+
+testRouter
+    .route('/list')
+    .get(getAllTests);

@@ -7,10 +7,10 @@ export const getQuestionsInTest = async (req, res) => {
     const rowsWithAnswers = [];
     for (let row of data.rows) {
         const result = await pool.query("SELECT * FROM answers WHERE questionid = $1", [row.id]);
-        const rows = await result.rows;
+        const answers = await result.rows;
         rowsWithAnswers.push({
             ...row,
-            answers: rows
+            answers
         })
     }
 
@@ -22,8 +22,11 @@ export const createQuestion = async (req, res) => {
     const {text, testId, answers} = req.body;
     const result = await pool.query("INSERT INTO questions(text, testId) VALUES ($1, $2) RETURNING id", [text, testId]);
     const id = result.rows[0].id;
-    answers.forEach(async ({text, isrightanswer}) => {
-        await pool.query("INSERT INTO answers(text, questionId, isrightanswer) VALUES ($1, $2, $3) RETURNING id", [text, id, isrightanswer]);
-    });
+    const createAnswer = async (answer) => {
+        await pool.query("INSERT INTO answers(text, questionId, isrightanswer) VALUES ($1, $2, $3) RETURNING id", [answer.text, id, answer.isrightanswer]);
+    }
+    for (const answer of answers) {
+        await createAnswer(answer);
+    }
     res.json();
 }

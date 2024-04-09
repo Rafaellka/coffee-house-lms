@@ -9,15 +9,26 @@
             <ng-container *ngIf="authRequestService.isAuthorized$ | async">
                 <ion-content>
                     <ion-list id="inbox-list">
-                        <ion-menu-toggle auto-hide="false" *ngFor="let link of links; let i = index">
+                        <ion-menu-toggle auto-hide="false">
                             <ion-item
+                                (click)="profileClick()"
                                 routerDirection="root"
-                                [routerLink]="[link.url]"
+                                routerLink="/profile"
                                 lines="none"
                                 detail="false"
                                 routerLinkActive="selected">
-                                <ion-icon aria-hidden="true" slot="start" [md]="link.icon"></ion-icon>
-                                <ion-label>{{ link.title }}</ion-label>
+                                <ion-icon aria-hidden="true" slot="start" [md]="'person-outline'"></ion-icon>
+                                <ion-label>Профиль</ion-label>
+                            </ion-item>
+                            <ion-item
+                                (click)="tracksClick()"
+                                routerDirection="root"
+                                routerLink="/tracks"
+                                lines="none"
+                                detail="false"
+                                routerLinkActive="selected">
+                                <ion-icon aria-hidden="true" slot="start" [md]="'file-tray-full-outline'"></ion-icon>
+                                <ion-label>Курсы</ion-label>
                             </ion-item>
                         </ion-menu-toggle>
                     </ion-list>

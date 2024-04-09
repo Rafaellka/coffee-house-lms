@@ -1,12 +1,16 @@
 import express from "express";
-import {addLecture, deleteLecture} from "../controllers/lecture-controller.js";
+import {addLecture, deleteLecture, getAllLectures} from "../controllers/lecture-controller.js";
 
 export const lectureRouter = express.Router();
 
 lectureRouter
     .route('/add')
-    .post(addLecture)
+    .post(addLecture);
 
 lectureRouter
     .route('/delete')
-    .delete(deleteLecture)
+    .delete(deleteLecture);
+
+lectureRouter
+    .route('/list')
+    .get(getAllLectures);

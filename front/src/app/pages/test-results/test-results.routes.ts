@@ -4,11 +4,6 @@ import { TestResultPage } from "./test-result.page";
 export const routes: Routes = [
 	{
 		path: '',
-		redirectTo: 'results',
-		pathMatch: 'full'
-	},
-	{
-		path: 'results',
 		component: TestResultPage
 	}
 ]

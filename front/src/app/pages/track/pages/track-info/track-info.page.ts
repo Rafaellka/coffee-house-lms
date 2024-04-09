@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { HeaderComponent } from "../../../../custom-modules/header/header.component";
 import { IonButton, IonContent, IonItem, IonList, IonModal } from "@ionic/angular/standalone";
 import { Router } from "@angular/router";
@@ -72,18 +72,10 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 					takeUntilDestroyed(this._destroyRef)
 				)
 				.subscribe(() => {
-					if (this._testList$.value.every((test) => test.passed) && this._lectureList$.value.every((lecture) => lecture.passed)) {
-						this._trackRequestService.setTrackPassed(this._track)
-							.subscribe(() => {
-								this._trackStateService.loadTracks$.next();
-							});
-					} else {
-						this._trackRequestService.setTrackFailed(this._track)
-							.subscribe(() => {
-								this._trackStateService.loadTracks$.next();
-							});
-					}
-				})
+					this.checkForTrackComplete();
+					this.afterTrackInfoInitialized();
+				});
+
 		}
 		this._lectureStateService.loadLectures$
 			.pipe(
@@ -165,6 +157,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 				this._testsLoaded$.complete();
 			});
 	}
+
 	public deleteTrack(): void {
 		this._trackRequestService.deleteTrack(this._track)
 			.pipe(
@@ -173,5 +166,29 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 			.subscribe(() => {
 				this._router.navigate(['tracks']);
 			})
+	}
+
+	private checkForTrackComplete(): void {
+		if (this._testList$.value.every((test) => test.passed) && this._lectureList$.value.every((lecture) => lecture.passed)) {
+			this._trackRequestService.setTrackPassed(this._track)
+				.subscribe(() => {
+					this._trackStateService.loadTracks$.next();
+				});
+		} else {
+			this._trackRequestService.setTrackFailed(this._track)
+				.subscribe(() => {
+					this._trackStateService.loadTracks$.next();
+				});
+		}
+	}
+
+	private afterTrackInfoInitialized(): void {
+		this._trackStateService.checkForTrackComplete$
+			.pipe(
+				takeUntilDestroyed(this._destroyRef)
+			)
+			.subscribe(() => {
+				this.checkForTrackComplete();
+			});
 	}
 }

@@ -14,7 +14,9 @@ import { IAddTestRequestModel } from "../request-models/add-test.request-model";
 import { UserModel } from "../../../auth/data/models/user.model";
 import { USER_INFO_TOKEN } from "../../../auth/tokens/user-info.token";
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class TrackRequestService {
 	private _httpClient: HttpClient = inject(HttpClient);
 	private _userInfo$: BehaviorSubject<UserModel> = inject(USER_INFO_TOKEN);
@@ -23,6 +25,20 @@ export class TrackRequestService {
 		return this._httpClient.get<ITrackResponseModel[]>(environment.apiUrl + 'track/list')
 			.pipe(
 				map((list: ITrackResponseModel[]) => list.map((item: ITrackResponseModel) => new TrackModel(item)))
+			);
+	}
+
+	public getAllLectures(): Observable<LectureModel[]> {
+		return this._httpClient.get<ILectureResponseModel[]>(environment.apiUrl + 'lecture/list')
+			.pipe(
+				map((list: ILectureResponseModel[]) => list.map((item: ILectureResponseModel) => new LectureModel(item)))
+			);
+	}
+
+	public getAllTests(): Observable<TestModel[]> {
+		return this._httpClient.get<ITestResponseModel[]>(environment.apiUrl + 'lecture/list')
+			.pipe(
+				map((list: ITestResponseModel[]) => list.map((item: ITestResponseModel) => new TestModel(item)))
 			);
 	}
 

@@ -8,6 +8,8 @@ import { BehaviorSubject } from "rxjs";
 import { USER_INFO_TOKEN } from "./pages/auth/tokens/user-info.token";
 import { addIcons } from "ionicons";
 import { fileTrayFullOutline, personOutline } from "ionicons/icons";
+import { UserProgressService } from "./pages/profile/services/user-progress.service";
+import { TrackStateService } from "./pages/track/services/track-state.service";
 
 @Component({
 	selector: 'app-root',
@@ -18,13 +20,13 @@ import { fileTrayFullOutline, personOutline } from "ionicons/icons";
 export class AppComponent implements OnInit {
 	public authRequestService: AuthRequestService = inject(AuthRequestService);
 	public links = [
-		{ title: 'Профиль', url: '/profile', icon: 'person-outline' },
 		{ title: 'Курсы', url: '/tracks', icon: 'file-tray-full-outline' },
 		{ title: 'Другие пользователи', url: '/tracks', icon: 'file-tray-full-outline' },
 	];
 	private _userInfo$: BehaviorSubject<UserModel | null> = inject(USER_INFO_TOKEN);
 	private _router: Router = inject(Router);
-
+	private _userProgressService: UserProgressService = inject(UserProgressService);
+	private _trackStateService: TrackStateService = inject(TrackStateService);
 	constructor() {
 		addIcons({personOutline, fileTrayFullOutline})
 	}
@@ -38,4 +40,12 @@ export class AppComponent implements OnInit {
 			this._router.navigate(['profile']);
 		}
 	}
+
+	public profileClick(): void {
+		this._userProgressService.loadProgress$.next();
+	}
+	public tracksClick(): void {
+		this._trackStateService.checkForTrackComplete$.next();
+	}
+
 }
