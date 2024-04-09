@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 import { TestModel } from "../../track/data/models/test.model";
 import { IResultItem } from "../interfaces/result-item.interface";
 
@@ -22,6 +22,7 @@ export class TestStateService {
 	public set currentTestResults(value: IResultItem[]) {
 		this._currentTestResultsBhs$.next(value);
 	}
+	public loadTests$: Subject<void> = new Subject<void>();
 	private _currentTestBhs$: BehaviorSubject<TestModel | null> = new BehaviorSubject<TestModel | null>(null);
 
 	private _currentTestResultsBhs$: BehaviorSubject<IResultItem[] | null> = new BehaviorSubject<IResultItem[] | null>(null);

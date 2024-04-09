@@ -9,6 +9,7 @@
         <div>
             <ion-button *ngIf="!isLastLecture" (click)="goToNextLecture()">Следующая лекция</ion-button>
             <ion-button (click)="goToTrack()">Вернуться к курсу</ion-button>
+            <ion-button *ngIf="isCreator" (click)="deleteLecture()" [color]="'danger'">Удалить лекцию</ion-button>
         </div>
     </div>
 </ion-content>

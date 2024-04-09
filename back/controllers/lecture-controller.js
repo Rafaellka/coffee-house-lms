@@ -6,3 +6,10 @@ export const addLecture = async (req, res) => {
 
     res.json();
 }
+
+export const deleteLecture = async (req, res) => {
+    const {lectureId} = req.query;
+    await pool.query("DELETE FROM lectures WHERE id = $1", [lectureId]);
+    await pool.query("DELETE FROM userLecture WHERE lectureid = $1", [lectureId]);
+    res.json();
+}

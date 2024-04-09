@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, take } from "rxjs";
+import { BehaviorSubject, Subject, take } from "rxjs";
 import { LectureModel } from "../../track/data/models/lecture.model";
 import { LectureRequestService } from "../data/lecture-request.service";
 
@@ -18,6 +18,7 @@ export class LectureStateService {
 		return this._currentLectureBhs$.value;
 	}
 
+	public loadLectures$: Subject<void> = new Subject<void>();
 	private _lectureListBhs$: BehaviorSubject<LectureModel[]> = new BehaviorSubject<LectureModel[]>([]);
 	private _currentLectureBhs$: BehaviorSubject<LectureModel | null> = new BehaviorSubject<LectureModel | null>(null);
 	private _lectureRequestService: LectureRequestService = inject(LectureRequestService);

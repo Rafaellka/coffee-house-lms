@@ -1,10 +1,10 @@
 import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { HeaderComponent } from "../../../../custom-modules/header/header.component";
 import { IonButton, IonContent, IonItem, IonLabel, IonList, IonModal } from "@ionic/angular/standalone";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, RoutesRecognized } from "@angular/router";
 import { TrackRequestService } from "../../data/services/track-request.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { BehaviorSubject, Observable, switchMap, take, tap } from "rxjs";
+import { BehaviorSubject, filter, Observable, startWith, switchMap, take, tap } from "rxjs";
 import { LectureModel } from "../../data/models/lecture.model";
 import { TestModel } from "../../data/models/test.model";
 import { CommonModule } from "@angular/common";
@@ -16,6 +16,8 @@ import { AddTestModalComponent } from "../../components/add-test-modal/add-test-
 import { WithModalComponent } from "../../../../custom-modules/modal/with-modal.component";
 import { TestStateService } from "../../../test/services/test-state.service";
 import { LectureStateService } from "../../../lecture/services/lecture-state.service";
+import { TrackStateService } from "../../services/track-state.service";
+import { USER_INFO_TOKEN } from "../../../auth/tokens/user-info.token";
 
 @Component({
 	templateUrl: './track-info.page.html',
@@ -27,6 +29,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 	public get track(): TrackModel {
 		return this._track;
 	}
+	public readonly isCreator: boolean = inject(USER_INFO_TOKEN).value.isCreator;
 
 	public lectureList$: Observable<LectureModel[]>;
 	public testList$: Observable<TestModel[]>;
@@ -42,6 +45,8 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
 	private _testStateService: TestStateService = inject(TestStateService);
 	private _lectureStateService: LectureStateService = inject(LectureStateService);
+	private _trackStateService: TrackStateService = inject(TrackStateService);
+	private _destroyRef: DestroyRef = inject(DestroyRef);
 
 	constructor() {
 		super();
@@ -51,14 +56,23 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		const state = this._router.getCurrentNavigation()?.extras.state;
-		if (!state) {
-			this._router.navigate(['tracks']);
-		} else {
-			this._track = state['track'];
-			this.loadLectures();
-			this.loadTests();
-		}
+		this._track = this._trackStateService.currentTrack;
+		this._lectureStateService.loadLectures$
+			.pipe(
+				startWith(null),
+				takeUntilDestroyed(this._destroyRef)
+			)
+			.subscribe(() => {
+				this.loadLectures();
+			});
+		this._testStateService.loadTests$
+			.pipe(
+				startWith(null),
+				takeUntilDestroyed(this._destroyRef)
+			)
+			.subscribe(() => {
+				this.loadTests();
+			})
 	}
 
 	public gotToLecture(lecture: LectureModel, index: number): void {
@@ -91,9 +105,9 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 				}),
 				switchMap(() => this._trackRequestService.getUserPassedLectures())
 			)
-			.subscribe((passedLectureIds: number[] ) => {
-				passedLectureIds.forEach((testId: number) => {
-					this._lectureList$.value.find((lecture: LectureModel) => lecture.id === testId).passed = true;
+			.subscribe((passedLectureIds: number[]) => {
+				passedLectureIds.forEach((lectureId: number) => {
+					this._lectureList$.value.find((lecture: LectureModel) => lecture.id === lectureId).passed = true;
 				});
 			});
 	}

@@ -6,3 +6,10 @@ export const addTest = async (req, res) => {
 
     res.json();
 }
+
+export const deleteTest = async (req, res) => {
+    const {testId} = req.query;
+    await pool.query("DELETE FROM tests WHERE id = $1", [testId]);
+    await pool.query("DELETE FROM userTest WHERE testid = $1", [testId]);
+    res.json();
+}

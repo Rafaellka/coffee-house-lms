@@ -63,4 +63,8 @@ export class RegistrationPage {
 				}
 			});
 	}
+
+	public goToLogin(): void {
+		this._router.navigate(['auth/login']);
+	}
 }

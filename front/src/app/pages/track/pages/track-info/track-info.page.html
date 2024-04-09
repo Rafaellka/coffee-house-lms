@@ -12,7 +12,7 @@
                     [color]="lecture.passed ? 'success' : 'light'"
                     (click)="gotToLecture(lecture, index)">{{lecture.name}}</ion-item>
             </ng-container>
-            <ion-button class="track-info-page__add-button" (click)="addLecture()">Добавить лекцию</ion-button>
+            <ion-button *ngIf="isCreator" class="track-info-page__add-button" (click)="addLecture()">Добавить лекцию</ion-button>
         </ion-list>
         <ion-list [inset]="true">
             <div class="track-info-page__group-label">Список тестов</div>
@@ -25,7 +25,7 @@
                     [color]="test.passed ? 'success' : 'light'"
                     (click)="goToTest(test)">{{test.name}}</ion-item>
             </ng-container>
-            <ion-button class="track-info-page__add-button" (click)="addTest()">Добавить тест</ion-button>
+            <ion-button *ngIf="isCreator" class="track-info-page__add-button" (click)="addTest()">Добавить тест</ion-button>
         </ion-list>
     </div>
     <ion-modal [isOpen]="isAddModalOpen$ | async">

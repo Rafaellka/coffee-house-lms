@@ -52,16 +52,16 @@ export const tryToRegister = async (req, res) => {
     }
 
     const passHash = await bcrypt.hash(password, 7);
-    await pool.query(
-        `INSERT INTO users(login, name, role, passhash)
-         VALUES ($1, $2, $3, $4)`,
+    const insertRes = await pool.query(
+        `INSERT INTO users(login, name, role, passhash) VALUES ($1, $2, $3, $4) RETURNING id`,
         [login, name, role, passHash]
     );
+    const id = insertRes.rows[0].id;
 
     res.json({
         loggedIn: true,
         user: {
-            name, role
+            name, role, id
         }
     });
 };

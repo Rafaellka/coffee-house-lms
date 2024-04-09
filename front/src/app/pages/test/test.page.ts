@@ -13,6 +13,7 @@ import { QuestionComponent } from "./components/question/question.component";
 import { IResultItem } from "./interfaces/result-item.interface";
 import { TestStateService } from "./services/test-state.service";
 import { AnswerModel } from "./data/models/answer.model";
+import { USER_INFO_TOKEN } from "../auth/tokens/user-info.token";
 
 @Component({
 	templateUrl: './test.page.html',
@@ -27,6 +28,7 @@ export class TestPage extends WithModalComponent implements OnInit {
 	public get checkAnswersDisabled(): boolean {
 		return this._results.some((result: IResultItem) => !result.answer);
 	}
+	public readonly isCreator: boolean = inject(USER_INFO_TOKEN).value.isCreator;
 	public questions$: Observable<QuestionModel[]>;
 	private _questions$: BehaviorSubject<QuestionModel[]> = new BehaviorSubject<QuestionModel[]>([]);
 	private _testRequestService: TestRequestService = inject(TestRequestService);
@@ -71,5 +73,18 @@ export class TestPage extends WithModalComponent implements OnInit {
 	public checkResults(): void {
 		this._testStateService.currentTestResults = this._results;
 		this._router.navigate(['results']);
+	}
+
+	public goToTrack(): void {
+		this._testStateService.loadTests$.next();
+		this._router.navigate(['tracks/track-info', this._test.trackId]);
+	}
+
+	public deleteTest(): void {
+		this._testRequestService.deleteTest(this._test)
+			.pipe(
+				take(1)
+			)
+			.subscribe();
 	}
 }

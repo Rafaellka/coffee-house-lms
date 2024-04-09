@@ -51,6 +51,7 @@ export class AuthRequestService {
 					if (res.loggedIn) {
 						const userModel: UserModel = new UserModel(res.user);
 						this._userInfo$.next(userModel);
+						localStorage.setItem('user', JSON.stringify(res.user));
 						this._isAuthorized$.next(true);
 					}
 				}),

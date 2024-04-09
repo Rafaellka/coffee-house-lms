@@ -19,4 +19,12 @@ export class LectureRequestService {
 			userId: this._userInfo$.value.id
 		});
 	}
+
+	public deleteLecture(lecture: LectureModel): Observable<void> {
+		return this._httpClient.delete<void>(environment.apiUrl + 'lecture/delete', {
+			params: {
+				lectureId: lecture.id
+			}
+		});
+	}
 }

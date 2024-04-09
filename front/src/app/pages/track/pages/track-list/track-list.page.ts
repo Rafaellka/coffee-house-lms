@@ -7,6 +7,7 @@ import { IonButton, IonContent, IonModal } from "@ionic/angular/standalone";
 import { HeaderComponent } from "../../../../custom-modules/header/header.component";
 import { TrackListItemComponent } from "../../components/track-list-item/track-list-item.component";
 import { AddTrackModalComponent } from "../../components/add-track-modal/add-track-modal.component";
+import { USER_INFO_TOKEN } from "../../../auth/tokens/user-info.token";
 
 @Component({
 	templateUrl: './track-list.page.html',
@@ -15,11 +16,13 @@ import { AddTrackModalComponent } from "../../components/add-track-modal/add-tra
 	styleUrls: ['./styles/track-list.page.scss']
 })
 export class TrackListPage implements OnInit {
+	public readonly isCreator: boolean = inject(USER_INFO_TOKEN).value.isCreator;
 	public isAddTrackModalOpen$: Observable<boolean>;
 	public trackList$: Observable<TrackModel[]>;
 	private _trackList$: BehaviorSubject<TrackModel[]> = new BehaviorSubject<TrackModel[]>([]);
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
 	private _isAddTrackModalOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
 	constructor() {
 		this.trackList$ = this._trackList$.asObservable();
 		this.isAddTrackModalOpen$ = this._isAddTrackModalOpen$.asObservable();

@@ -3,7 +3,6 @@ import { IonicModule } from "@ionic/angular";
 import { Router, RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { AuthRequestService } from "./pages/auth/data/services/auth-request.service";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { UserModel } from "./pages/auth/data/models/user.model";
 import { BehaviorSubject } from "rxjs";
 import { USER_INFO_TOKEN } from "./pages/auth/tokens/user-info.token";
@@ -21,7 +20,6 @@ export class AppComponent implements OnInit {
 		{ title: 'Курсы', url: '/tracks', icon: 'file-tray-full-outline' },
 	];
 	private _userInfo$: BehaviorSubject<UserModel | null> = inject(USER_INFO_TOKEN);
-	private _destroyRef = inject(DestroyRef);
 	private _router: Router = inject(Router);
 
 	public ngOnInit(): void {

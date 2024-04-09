@@ -36,4 +36,12 @@ export class TestRequestService {
 			userId: this._userInfo$.value.id
 		});
 	}
+
+	public deleteTest(test: TestModel): Observable<void> {
+		return this._httpClient.delete<void>(environment.apiUrl + 'test/delete', {
+			params: {
+				testId: test.id
+			}
+		});
+	}
 }

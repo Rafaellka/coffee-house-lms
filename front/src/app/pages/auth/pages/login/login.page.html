@@ -18,5 +18,6 @@
             type="password"
             label-placement="stacked"></ion-input>
         <ion-button [disabled]="!loginControlValue || !passwordControlValue" (click)="login()">Войти</ion-button>
+        <div (click)="goToRegister()">Создать аккаунт</div>
     </div>
 </ion-content>

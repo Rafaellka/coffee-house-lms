@@ -4,11 +4,12 @@ import { FormsModule } from "@angular/forms";
 import { AuthRequestService } from "../../data/services/auth-request.service";
 import { Router } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { IonicModule } from "@ionic/angular";
 
 @Component({
 	templateUrl: './login.page.html',
 	standalone: true,
-	imports: [IonContent, IonInput, IonButton, FormsModule],
+	imports: [IonicModule, FormsModule],
 	styleUrls: ['./styles/login.scss']
 })
 export class LoginPage {
@@ -32,5 +33,9 @@ export class LoginPage {
 					this._router.navigate(['tracks']);
 				}
 			});
+	}
+
+	public goToRegister(): void {
+		this._router.navigate(['auth/registration']);
 	}
 }
