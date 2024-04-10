@@ -2,6 +2,7 @@
 <ion-content>
 	<div class="other-user-list-page">
 		<ng-container *ngIf="userList$ | async as users">
+			<div *ngIf="!users.length">Список пуст</div>
 			<ion-list *ngFor="let user of users">
 				<ion-item
 					button
