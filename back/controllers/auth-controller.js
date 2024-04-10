@@ -24,13 +24,16 @@ export const tryToLogin = async (req, res) => {
             status: "⚠ Неправильный пароль!"
         });
     }
-
+    const role = await pool.query(
+        "SELECT * FROM positions WHERE id=$1",
+        [user.positionid]
+    );
     res.json({
         loggedIn: true,
         user: {
             id: user.id,
             name: user.name,
-            role: user.role
+            role: role.rows[0].name
         }
     });
 };
@@ -52,9 +55,10 @@ export const tryToRegister = async (req, res) => {
     }
 
     const passHash = await bcrypt.hash(password, 7);
+    const positionId = await pool.query("SELECT * FROM positions WHERE name=$1", [role]);
     const insertRes = await pool.query(
-        `INSERT INTO users(login, name, role, passhash) VALUES ($1, $2, $3, $4) RETURNING id`,
-        [login, name, role, passHash]
+        `INSERT INTO users(login, name, positionId, passhash) VALUES ($1, $2, $3, $4) RETURNING id`,
+        [login, name, positionId.rows[0].id, passHash]
     );
     const id = insertRes.rows[0].id;
 

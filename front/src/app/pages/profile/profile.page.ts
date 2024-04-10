@@ -23,7 +23,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 })
 export class ProfilePage implements OnInit {
 	public userInfo: UserModel;
-	public userProgress$: Observable<IUserProgress>;
+	public readonly userProgress$: Observable<IUserProgress>;
 	private _userProgressBhs$: BehaviorSubject<IUserProgress | null> = new BehaviorSubject<IUserProgress | null>(null);
 	private _userInfo$: BehaviorSubject<UserModel> = inject(USER_INFO_TOKEN);
 	private _router: Router = inject(Router);
@@ -53,6 +53,7 @@ export class ProfilePage implements OnInit {
 
 	public exit(): void {
 		this._userInfo$.next(null);
+		this._userProgressBhs$.next(null);
 		this._router.navigate(['auth/login']);
 	}
 
@@ -62,7 +63,8 @@ export class ProfilePage implements OnInit {
 	}
 
 	private loadProgress(): void {
-		this._userProgressService.getUserProgress()
+		this.userInfo = this._userInfo$.value;
+		this._userProgressService.getUserProgress(this._userInfo$.value.id)
 			.pipe(
 				take(1)
 			)

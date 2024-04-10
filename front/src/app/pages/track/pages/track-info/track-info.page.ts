@@ -18,6 +18,7 @@ import { TestStateService } from "../../../test/services/test-state.service";
 import { LectureStateService } from "../../../lecture/services/lecture-state.service";
 import { TrackStateService } from "../../services/track-state.service";
 import { USER_INFO_TOKEN } from "../../../auth/tokens/user-info.token";
+import { UserModel } from "../../../auth/data/models/user.model";
 
 @Component({
 	templateUrl: './track-info.page.html',
@@ -30,7 +31,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 		return this._track;
 	}
 
-	public readonly isCreator: boolean = inject(USER_INFO_TOKEN).value.isCreator;
+	public readonly isCreator: boolean;
 
 	public lectureList$: Observable<LectureModel[]>;
 	public testList$: Observable<TestModel[]>;
@@ -50,6 +51,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 	private _trackStateService: TrackStateService = inject(TrackStateService);
 
 	private _destroyRef: DestroyRef = inject(DestroyRef);
+	private _userInfo$: BehaviorSubject<UserModel> = inject(USER_INFO_TOKEN);
 
 	private _lecturesLoaded$: Subject<void> = new Subject<void>();
 	private _testsLoaded$: Subject<void> = new Subject<void>();
@@ -58,6 +60,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 		super();
 		this.lectureList$ = this._lectureList$.asObservable();
 		this.testList$ = this._testList$.asObservable();
+		this.isCreator = this._userInfo$.value.isCreator;
 		addIcons({ caretForwardOutline });
 	}
 
@@ -117,7 +120,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 
 	public loadLectures(): void {
 		forkJoin([
-			this._trackRequestService.getUserPassedLectures(),
+			this._trackRequestService.getUserPassedLectures(this._userInfo$.value.id),
 			this._trackRequestService.getLecturesInTrack(this._track.id)
 		])
 			.pipe(
@@ -139,7 +142,7 @@ export class TrackInfoPage extends WithModalComponent implements OnInit {
 
 	public loadTests(): void {
 		forkJoin([
-			this._trackRequestService.getUserPassedTests(),
+			this._trackRequestService.getUserPassedTests(this._userInfo$.value.id),
 			this._trackRequestService.getTestsInTrack(this._track.id)
 		])
 			.pipe(

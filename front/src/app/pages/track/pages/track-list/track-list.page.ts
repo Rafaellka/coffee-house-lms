@@ -10,6 +10,7 @@ import { AddTrackModalComponent } from "../../components/add-track-modal/add-tra
 import { USER_INFO_TOKEN } from "../../../auth/tokens/user-info.token";
 import { TrackStateService } from "../../services/track-state.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { UserModel } from "../../../auth/data/models/user.model";
 
 @Component({
 	templateUrl: './track-list.page.html',
@@ -18,18 +19,20 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 	styleUrls: ['./styles/track-list.page.scss']
 })
 export class TrackListPage implements OnInit {
-	public readonly isCreator: boolean = inject(USER_INFO_TOKEN).value.isCreator;
-	public isAddTrackModalOpen$: Observable<boolean>;
-	public trackList$: Observable<TrackModel[]>;
+	public readonly isCreator: boolean;
+	public readonly isAddTrackModalOpen$: Observable<boolean>;
+	public readonly trackList$: Observable<TrackModel[]>;
 	private _trackList$: BehaviorSubject<TrackModel[]> = new BehaviorSubject<TrackModel[]>([]);
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
 	private _trackStateService: TrackStateService = inject(TrackStateService);
 	private _isAddTrackModalOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	private _userInfo$: BehaviorSubject<UserModel> = inject(USER_INFO_TOKEN);
 	private _destroyRef: DestroyRef = inject(DestroyRef);
 
 	constructor() {
 		this.trackList$ = this._trackList$.asObservable();
 		this.isAddTrackModalOpen$ = this._isAddTrackModalOpen$.asObservable();
+		this.isCreator = this._userInfo$.value.isCreator;
 	}
 
 	public ngOnInit(): void {
@@ -53,7 +56,7 @@ export class TrackListPage implements OnInit {
 
 	public loadTrackList(): void {
 		forkJoin([
-			this._trackRequestService.getUserPassedTracks(),
+			this._trackRequestService.getUserPassedTracks(this._userInfo$.value.id),
 			this._trackRequestService.getTrackList()
 		])
 			.pipe(

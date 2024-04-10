@@ -76,26 +76,26 @@ export class TrackRequestService {
 		return this._httpClient.post<void>(environment.apiUrl + 'test/add', data);
 	}
 
-	public getUserPassedTracks(): Observable<number[]> {
+	public getUserPassedTracks(userId: number): Observable<number[]> {
 		return this._httpClient.get<number[]>(environment.apiUrl + 'user-track/list', {
 			params: {
-				userId: this._userInfo$.value.id
+				userId
 			}
 		})
 	}
 
-	public getUserPassedLectures(): Observable<number[]> {
+	public getUserPassedLectures(userId: number): Observable<number[]> {
 		return this._httpClient.get<number[]>(environment.apiUrl + 'user-lecture/list', {
 			params: {
-				userId: this._userInfo$.value.id
+				userId
 			}
 		})
 	}
 
-	public getUserPassedTests(): Observable<number[]> {
+	public getUserPassedTests(userId: number): Observable<number[]> {
 		return this._httpClient.get<number[]>(environment.apiUrl + 'user-test/list', {
 			params: {
-				userId: this._userInfo$.value.id
+				userId
 			}
 		})
 	}

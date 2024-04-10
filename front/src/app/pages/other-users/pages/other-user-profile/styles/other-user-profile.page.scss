@@ -1,0 +1,35 @@
+.other-user-profile-page {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+
+    &__user-info {
+        display: flex;
+        padding: 20px;
+        border: 2px solid grey;
+        border-radius: 4px;
+        align-items: center;
+    }
+
+    &__user-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__progress {
+        display: flex;
+        padding: 20px;
+        border: 2px solid grey;
+        border-radius: 4px;
+        flex-direction: column;
+    }
+
+    &__track {
+        border-radius: 4px;
+    }
+
+    &__icon {
+        margin-right: 10px;
+    }
+}

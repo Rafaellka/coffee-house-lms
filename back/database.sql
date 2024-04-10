@@ -10,7 +10,8 @@ CREATE TABLE users
 CREATE TABLE positions
 (
     id SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL
+    name VARCHAR NOT NULL,
+    parentPositionId INTEGER NULLABLE
 );
 
 CREATE TABLE tracks

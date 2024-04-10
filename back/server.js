@@ -11,6 +11,7 @@ import {questionRouter} from "./routers/question-router.js";
 import {userTestRouter} from "./routers/user-test-router.js";
 import {userTrackRouter} from "./routers/user-track-router.js";
 import {userLectureRouter} from "./routers/user-lecture-router.js";
+import {otherUserRouter} from "./routers/other-user-router.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -28,5 +29,6 @@ app.use('/question', questionRouter);
 app.use('/user-test', userTestRouter);
 app.use('/user-lecture', userLectureRouter);
 app.use('/user-track', userTrackRouter);
+app.use('/other-user', otherUserRouter);
 
 server.listen(8080, () => console.log(`Сервер запущен на 8080`));

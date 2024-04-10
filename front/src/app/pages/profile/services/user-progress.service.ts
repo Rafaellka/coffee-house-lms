@@ -10,11 +10,11 @@ export class UserProgressService {
 	public loadProgress$: Subject<void> = new Subject<void>();
 	private _trackRequestService: TrackRequestService = inject(TrackRequestService);
 
-	public getUserProgress(): Observable<IUserProgress> {
+	public getUserProgress(userId: number): Observable<IUserProgress> {
 		return forkJoin([
-			this._trackRequestService.getUserPassedTracks(),
-			this._trackRequestService.getUserPassedLectures(),
-			this._trackRequestService.getUserPassedTests(),
+			this._trackRequestService.getUserPassedTracks(userId),
+			this._trackRequestService.getUserPassedLectures(userId),
+			this._trackRequestService.getUserPassedTests(userId),
 			this._trackRequestService.getTrackList(),
 			this._trackRequestService.getAllLectures(),
 			this._trackRequestService.getAllTests()

@@ -43,9 +43,7 @@ export class AppComponent implements OnInit {
 	}
 
 	public profileClick(): void {
-		if (!this._userInfo$.value.isCreator) {
-			this._userProgressService.loadProgress$.next();
-		}
+		this._userProgressService.loadProgress$.next();
 	}
 
 	public tracksClick(): void {
