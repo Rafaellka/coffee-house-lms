@@ -11,15 +11,14 @@ CREATE TABLE positions
 (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
-    parentPositionId INTEGER NULLABLE
+    parentPositionId INTEGER
 );
 
 CREATE TABLE tracks
 (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
-    description VARCHAR NOT NULL,
-    positionId INTEGER NOT NULL
+    description VARCHAR NOT NULL
 );
 
 CREATE TABLE lectures

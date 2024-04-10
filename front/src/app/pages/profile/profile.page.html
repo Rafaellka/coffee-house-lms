@@ -1,6 +1,6 @@
 <app-header [title]="'Профиль'"></app-header>
 <ion-content>
-    <div class="profile">
+    <div *ngIf="userInfo" class="profile">
         <div class="profile__user-info">
             <img src=""/>
             <div class="profile__user-details">

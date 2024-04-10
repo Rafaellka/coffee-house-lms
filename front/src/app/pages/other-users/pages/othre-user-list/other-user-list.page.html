@@ -1,0 +1,20 @@
+<app-header [title]="'Другие пользователи'"></app-header>
+<ion-content>
+	<div class="other-user-list-page">
+		<ng-container *ngIf="userList$ | async as users">
+			<ion-list *ngFor="let user of users">
+				<ion-item
+					button
+					detail="true"
+					class="other-user-list-page__item"
+					[color]="'light'"
+					(click)="goToUserProfile(user)">
+					<div class="other-user-list-page__item-inner">
+						<div>{{ user.name }}</div>
+						<div>Должность: {{ user.role | userRole }}</div>
+					</div>
+				</ion-item>
+			</ion-list>
+		</ng-container>
+	</div>
+</ion-content>

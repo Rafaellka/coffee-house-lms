@@ -2,9 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Subject } from "rxjs";
 import { UserModel } from "../../auth/data/models/user.model";
 
-@Injectable({
-	providedIn: 'root'
-})
+@Injectable()
 export class OtherUserStateService {
 	public get currentOtherUser(): UserModel {
 		return this._currentOtherUser.value;

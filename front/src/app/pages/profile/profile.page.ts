@@ -64,12 +64,15 @@ export class ProfilePage implements OnInit {
 
 	private loadProgress(): void {
 		this.userInfo = this._userInfo$.value;
-		this._userProgressService.getUserProgress(this._userInfo$.value.id)
-			.pipe(
-				take(1)
-			)
-			.subscribe((progress: IUserProgress) => {
-				this._userProgressBhs$.next(progress);
-			});
+		if (this.userInfo) {
+			this._userProgressService.getUserProgress(this.userInfo.id)
+				.pipe(
+					take(1)
+				)
+				.subscribe((progress: IUserProgress) => {
+					progress.tracks = progress.tracks.sort((a, b) => a.id - b.id);
+					this._userProgressBhs$.next(progress);
+				});
+		}
 	}
 }

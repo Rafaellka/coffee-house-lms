@@ -38,6 +38,11 @@ export const routes: Routes = [
 		canActivate: [authGuard]
 	},
 	{
+		path: 'other-user',
+		loadChildren: () => import('./pages/other-users/other-user.routes').then((m) => m.routes),
+		canActivate: [authGuard]
+	},
+	{
 		path: '**',
 		redirectTo: 'auth',
 	}

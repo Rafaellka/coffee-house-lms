@@ -1,0 +1,14 @@
+.other-user-list-page {
+	padding:15px;
+	&__item {
+		border-radius: 4px;
+		margin-bottom: 5px;
+	}
+
+	&__item-inner {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		padding: 15px 0;
+	}
+}

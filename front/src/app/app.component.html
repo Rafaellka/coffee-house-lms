@@ -1,40 +1,50 @@
 <ion-app>
-    <ion-split-pane contentId="main-content">
-        <ion-menu menuId="navigation" contentId="main-content" type="overlay">
-            <ion-header>
-                <ion-toolbar>
-                    <ion-title class="app__title">COFFEE LOVERS</ion-title>
-                </ion-toolbar>
-            </ion-header>
-            <ng-container *ngIf="authRequestService.isAuthorized$ | async">
-                <ion-content>
-                    <ion-list id="inbox-list">
-                        <ion-menu-toggle auto-hide="false">
-                            <ion-item
-                                (click)="profileClick()"
-                                routerDirection="root"
-                                routerLink="/profile"
-                                lines="none"
-                                detail="false"
-                                routerLinkActive="selected">
-                                <ion-icon aria-hidden="true" slot="start" [md]="'person-outline'"></ion-icon>
-                                <ion-label>Профиль</ion-label>
-                            </ion-item>
-                            <ion-item
-                                (click)="tracksClick()"
-                                routerDirection="root"
-                                routerLink="/tracks"
-                                lines="none"
-                                detail="false"
-                                routerLinkActive="selected">
-                                <ion-icon aria-hidden="true" slot="start" [md]="'file-tray-full-outline'"></ion-icon>
-                                <ion-label>Курсы</ion-label>
-                            </ion-item>
-                        </ion-menu-toggle>
-                    </ion-list>
-                </ion-content>
-            </ng-container>
-        </ion-menu>
-        <ion-router-outlet id="main-content"></ion-router-outlet>
-    </ion-split-pane>
+	<ion-split-pane contentId="main-content">
+		<ion-menu menuId="navigation" contentId="main-content" type="overlay">
+			<ion-header>
+				<ion-toolbar>
+					<ion-title class="app__title">COFFEE LOVERS</ion-title>
+				</ion-toolbar>
+			</ion-header>
+			<ng-container *ngIf="authRequestService.isAuthorized$ | async">
+				<ion-content>
+					<ion-list id="inbox-list">
+						<ion-menu-toggle auto-hide="false">
+							<ion-item
+								(click)="profileClick()"
+								routerDirection="root"
+								routerLink="/profile"
+								lines="none"
+								detail="false"
+								routerLinkActive="selected">
+								<ion-icon aria-hidden="true" slot="start" [md]="'person-outline'"></ion-icon>
+								<ion-label>Профиль</ion-label>
+							</ion-item>
+							<ion-item
+								(click)="tracksClick()"
+								routerDirection="root"
+								routerLink="/tracks"
+								lines="none"
+								detail="false"
+								routerLinkActive="selected">
+								<ion-icon aria-hidden="true" slot="start" [md]="'file-tray-full-outline'"></ion-icon>
+								<ion-label>Курсы</ion-label>
+							</ion-item>
+							<ion-item
+								(click)="tracksClick()"
+								routerDirection="root"
+								routerLink="/other-user"
+								lines="none"
+								detail="false"
+								routerLinkActive="selected">
+								<ion-icon aria-hidden="true" slot="start" [md]="'file-tray-full-outline'"></ion-icon>
+								<ion-label>Другие пользователи</ion-label>
+							</ion-item>
+						</ion-menu-toggle>
+					</ion-list>
+				</ion-content>
+			</ng-container>
+		</ion-menu>
+		<ion-router-outlet id="main-content"></ion-router-outlet>
+	</ion-split-pane>
 </ion-app>
